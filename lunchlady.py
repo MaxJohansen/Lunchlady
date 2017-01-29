@@ -1,0 +1,64 @@
+from bs4 import BeautifulSoup
+from urllib.request import urlopen
+from datetime import date, timedelta
+from collections import namedtuple
+from itertools import takewhile
+
+Meal = namedtuple("Meal", ["pris", "navn", "beskrivelse"])
+
+base_url = "http://samskipnaden.no/dagens-meny/day/1/{:%Y%m%d}"
+
+SKIP_LIST = ("Markedet", "ILP-kafeen", "Musikkafeen")
+
+
+def get_menu(other_day=False):
+    day = other_day or date.today()
+    # print(f"Fetching {base_url.format(day)}...")
+    web_content = urlopen(base_url.format(day)).read()
+    soup = BeautifulSoup(web_content, "html.parser")
+    content = soup.find("div", class_="view-content-rows").find_all("div", class_="view-grouping-title")
+
+    das_dict = dict()
+
+    for x in content:
+        if x.string in SKIP_LIST:
+            # print("Skipping ", x.string)
+            continue
+        das_dict[x.string] = dict()
+        for submenu in takewhile(lambda x: x not in content, x.find_next_siblings("div")):
+            mealtime = submenu.find("h3").string
+            das_dict[x.string][mealtime] = parse_menu_from_ul(submenu("li"))
+
+    return das_dict
+
+
+def parse_menu_from_ul(unordered_list):
+    menu = list()
+    for x in unordered_list:
+        price = x.find("div", class_="views-field views-field-field-price").string
+        name = x.find("div", class_="views-field views-field-field-dish").string
+        desc = x.find("div", class_="views-field views-field-field-description").string
+        menu.append(Meal(navn=name, pris=price, beskrivelse=desc))
+
+    return menu
+
+
+def print_menu(menu_dict):
+    print(string_menu(menu_dict))
+
+
+def string_menu(menu_dict):
+    result = ""
+    for place, menus in menu_dict.items():
+        result += f"*{place}* serverer:\n"
+        for menu, items in menus.items():
+            result += f">*{menu}*\n"
+            for meal in sorted(items):
+                result += f">• *{meal.pris}* {meal.navn} ({meal.beskrivelse})\n"
+    return result
+
+
+if __name__ == "__main__":
+    day = date.today()
+    menu = get_menu(day)
+    print_menu(menu)
