@@ -9,7 +9,15 @@ Meal = namedtuple("Meal", ["pris", "navn", "beskrivelse"])
 base_url = "http://samskipnaden.no/dagens-meny/day/1/{:%Y%m%d}"
 
 SKIP_LIST = ("Markedet", "ILP-kafeen", "Musikkafeen")
+MH_mantor = "17:00"
+MH_fre = "16:00"
+Teo_mantor = "17:30"
+Teo_fre = "17:00"
 
+MH_OPENING_HOURS = { 0: MH_mantor, 1: MH_mantor, 2: MH_mantor, 3: MH_mantor, 4: MH_fre}
+TEO_OPENING_HOURS = { 0: Teo_mantor, 1: Teo_mantor, 2: Teo_mantor, 3: Teo_mantor, 4: Teo_fre}
+
+OPENING_HOURS = {"MH-kafeen": MH_OPENING_HOURS, "Teorifagskafeen": TEO_OPENING_HOURS}
 
 def get_menu(other_day=False):
     day = other_day or date.today()
@@ -26,7 +34,10 @@ def get_menu(other_day=False):
             continue
         das_dict[x.string] = dict()
         for submenu in takewhile(lambda x: x not in content, x.find_next_siblings("div")):
-            mealtime = submenu.find("h3").string
+            try:
+                mealtime = submenu.find("h3").string
+            except AttributeError:
+                continue
             das_dict[x.string][mealtime] = parse_menu_from_ul(submenu("li"))
 
     return das_dict
@@ -49,12 +60,18 @@ def print_menu(menu_dict):
 
 def string_menu(menu_dict):
     result = ""
+    day = date.today().weekday()
+
     for place, menus in menu_dict.items():
-        result += f"*{place}* serverer:\n"
+        try:
+            opening_hours = "stenger *{}* i dag".format(OPENING_HOURS[place][day])
+        except KeyError:
+            opening_hours = "stengt i dag"
+        result += "*{}* ({}) serverer:\n".format(place, opening_hours)
         for menu, items in menus.items():
-            result += f">*{menu}*\n"
+            result += ">*{}*\n".format(menu)
             for meal in sorted(items):
-                result += f">• *{meal.pris}* {meal.navn} ({meal.beskrivelse})\n"
+                result += ">• *{meal.pris}* {meal.navn} ({meal.beskrivelse})\n".format(meal=meal)
     return result
 
 
