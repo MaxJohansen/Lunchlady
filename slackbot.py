@@ -50,17 +50,25 @@ class Lunchlady(object):
                     return output['text'], output['channel']
         return None, None
 
+def reconnect(bot):
+    if slack_client.rtm_connect():
+        print("Doris is connected and running!")
+        while True:
+            command, channel = bot.parse_slack_output(slack_client.rtm_read())
+            if command and channel:
+                bot.handle_command(command, channel)
+            time.sleep(READ_WEBSOCKET_DELAY)
+    else:
+        print("Connection failed. Invalid Slack token or bot ID?")
+
+
 
 if __name__ == "__main__":
     slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
     READ_WEBSOCKET_DELAY = 1  # 1 second delay between reading from firehose
     doris = Lunchlady()
-    if slack_client.rtm_connect():
-        print("Doris is connected and running!")
-        while True:
-            command, channel = doris.parse_slack_output(slack_client.rtm_read())
-            if command and channel:
-                doris.handle_command(command, channel)
-            time.sleep(READ_WEBSOCKET_DELAY)
-    else:
-        print("Connection failed. Invalid Slack token or bot ID?")
+    while True:
+        try:
+            reconnect(doris)
+        except ConnectionResetError:
+            continue
