@@ -2,19 +2,21 @@
 # -*- coding: utf-8 -*-
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
-from datetime import date, timedelta
+from datetime import date
 from collections import namedtuple
 from itertools import takewhile
+from time import localtime
+from bettertime import HumanTime
 
 Meal = namedtuple("Meal", ["pris", "navn", "beskrivelse"])
 
 base_url = "http://samskipnaden.no/dagens-meny/day/1/{:%Y%m%d}"
 
 SKIP_LIST = ("Markedet", "ILP-kafeen", "Musikkafeen")
-MH_mantor = "17:00"
-MH_fre = "16:00"
-Teo_mantor = "17:30"
-Teo_fre = "17:00"
+MH_mantor = HumanTime(17)
+MH_fre = HumanTime(16)
+Teo_mantor = HumanTime(17, 30)
+Teo_fre = HumanTime(17)
 
 MH_OPENING_HOURS = {0: MH_mantor, 1: MH_mantor,
                     2: MH_mantor, 3: MH_mantor, 4: MH_fre}
@@ -23,6 +25,11 @@ TEO_OPENING_HOURS = {0: Teo_mantor, 1: Teo_mantor,
 
 OPENING_HOURS = {"MH-kafeen": MH_OPENING_HOURS,
                  "Teorifagskafeen": TEO_OPENING_HOURS}
+
+PIZZA_PLACES = {"Pizzabakeren": {"URL": "https://www.pizzabakeren.no/pizzameny", "Phone": "77 68 06 10" },
+                "Dolly Dimples": {"URL": "https://www.dolly.no/meny/pizza", "Phone": "0 44 40"},
+                "Peppe's Pizza": {"URL": "https://www.peppes.no/pp13/wicket/bookmarkable/no.peppes.pepp2013.bestill.pizza.PeppesPizzaIntroPage?14", "Phone": "22 22 55 55"},
+                "Retro House": {"URL": "https://www.facebook.com/Retro-Pizzeria-910569502345280/", "Phone": "77 67 77 77"}}
 
 
 def get_menu(other_day=False):
@@ -74,7 +81,7 @@ def string_menu(menu_dict):
 
     for place, menus in menu_dict.items():
         try:
-            opening_hours = f"stenger *{OPENING_HOURS[place][day]}* i dag"
+            opening_hours = f"stenger *{OPENING_HOURS[place][day].strftime('%H:%M')}* i dag"
         except KeyError:
             opening_hours = "stengt i dag"
         result += f"*{place}* ({opening_hours}) serverer:\n".format(place, opening_hours)
@@ -82,6 +89,13 @@ def string_menu(menu_dict):
             result += f">*{menu}*\n"
             for meal in sorted(items):
                 result += f">• *{meal.pris}* {meal.navn} ({meal.beskrivelse})\n"
+    return result
+
+
+def pizza_menu(pizza_dict):
+    result = "They're all closed. Try ordering some pizza instead?\n"
+    for place, details in pizza_dict.items():
+        result += f">• <{details['URL']}|{place}>: {details['Phone']}\n"
     return result
 
 

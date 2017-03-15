@@ -4,7 +4,7 @@ import os
 import time
 import re
 from slackclient import SlackClient
-from lunchlady import get_menu, string_menu
+from lunchlady import get_menu, string_menu, pizza_menu
 from datetime import datetime, timedelta
 
 BOT_ID = os.environ.get("BOT_ID")
@@ -15,6 +15,7 @@ class Lunchlady(object):
         self.can_speak_again = datetime.now()
         self.name_match = re.compile("<@" + BOT_ID + ">|doris", flags=re.I)
         self.keywords = re.compile("lunsj|lunch|dinner|middag", flags=re.I)
+        self.pizza = re.compile("pizza", flags=re.I)
 
     def handle_command(self, command, channel):
         """
@@ -31,6 +32,8 @@ class Lunchlady(object):
         print(command)
         if self.keywords.search(command):
             response = string_menu(get_menu())
+        elif self.pizza.search(command):
+            response = pizza_menu()
         else:
             response = "Whatever."
 
