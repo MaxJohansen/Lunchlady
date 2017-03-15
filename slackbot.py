@@ -41,6 +41,7 @@ class Lunchlady(object):
             response = "Nothin' today, sweetheart."
 
         slack_client.api_call("chat.postMessage", channel=channel,
+                              unfurl_links=False,
                               text=response, as_user=True)
 
     def parse_slack_output(self, slack_rtm_output):
