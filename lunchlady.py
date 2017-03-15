@@ -16,17 +16,22 @@ MH_fre = "16:00"
 Teo_mantor = "17:30"
 Teo_fre = "17:00"
 
-MH_OPENING_HOURS = { 0: MH_mantor, 1: MH_mantor, 2: MH_mantor, 3: MH_mantor, 4: MH_fre}
-TEO_OPENING_HOURS = { 0: Teo_mantor, 1: Teo_mantor, 2: Teo_mantor, 3: Teo_mantor, 4: Teo_fre}
+MH_OPENING_HOURS = {0: MH_mantor, 1: MH_mantor,
+                    2: MH_mantor, 3: MH_mantor, 4: MH_fre}
+TEO_OPENING_HOURS = {0: Teo_mantor, 1: Teo_mantor,
+                     2: Teo_mantor, 3: Teo_mantor, 4: Teo_fre}
 
-OPENING_HOURS = {"MH-kafeen": MH_OPENING_HOURS, "Teorifagskafeen": TEO_OPENING_HOURS}
+OPENING_HOURS = {"MH-kafeen": MH_OPENING_HOURS,
+                 "Teorifagskafeen": TEO_OPENING_HOURS}
+
 
 def get_menu(other_day=False):
     day = other_day or date.today()
     # print(f"Fetching {base_url.format(day)}...")
     web_content = urlopen(base_url.format(day)).read()
     soup = BeautifulSoup(web_content, "html.parser")
-    content = soup.find("div", class_="view-content-rows").find_all("div", class_="view-grouping-title")
+    content = soup.find(
+        "div", class_="view-content-rows").find_all("div", class_="view-grouping-title")
 
     das_dict = dict()
 
@@ -48,9 +53,12 @@ def get_menu(other_day=False):
 def parse_menu_from_ul(unordered_list):
     menu = list()
     for x in unordered_list:
-        price = x.find("div", class_="views-field views-field-field-price").string
-        name = x.find("div", class_="views-field views-field-field-dish").string
-        desc = x.find("div", class_="views-field views-field-field-description").string
+        price = x.find(
+            "div", class_="views-field views-field-field-price").string
+        name = x.find(
+            "div", class_="views-field views-field-field-dish").string
+        desc = x.find(
+            "div", class_="views-field views-field-field-description").string
         menu.append(Meal(navn=name, pris=price, beskrivelse=desc))
 
     return menu
@@ -66,14 +74,14 @@ def string_menu(menu_dict):
 
     for place, menus in menu_dict.items():
         try:
-            opening_hours = "stenger *{}* i dag".format(OPENING_HOURS[place][day])
+            opening_hours = f"stenger *{OPENING_HOURS[place][day]}* i dag"
         except KeyError:
             opening_hours = "stengt i dag"
-        result += "*{}* ({}) serverer:\n".format(place, opening_hours)
+        result += f"*{place}* ({opening_hours}) serverer:\n".format(place, opening_hours)
         for menu, items in menus.items():
-            result += ">*{}*\n".format(menu)
+            result += f">*{menu}*\n"
             for meal in sorted(items):
-                result += ">• *{meal.pris}* {meal.navn} ({meal.beskrivelse})\n".format(meal=meal)
+                result += f">• *{meal.pris}* {meal.navn} ({meal.beskrivelse})\n"
     return result
 
 
