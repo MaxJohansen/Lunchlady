@@ -93,7 +93,7 @@ def string_menu(menu_dict):
 
 
 def pizza_menu():
-    result = "They're all closed. Try ordering some pizza instead?\n"
+    result = ""
     for place, details in PIZZA_PLACES.items():
         result += f">• <{details['URL']}|{place}>: {details['Phone']}\n"
     return result
