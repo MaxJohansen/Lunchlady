@@ -5,7 +5,6 @@ from urllib.request import urlopen
 from datetime import date
 from collections import namedtuple
 from itertools import takewhile
-from time import localtime
 from bettertime import HumanTime
 
 Meal = namedtuple("Meal", ["pris", "navn", "beskrivelse"])
@@ -57,15 +56,18 @@ def get_menu(other_day=False):
     return das_dict
 
 
+def extract_element(navstring, fieldname):
+    return navstring.find("div", class_=f"views-field views-field-field-{fieldname}").find("div").string
+
+
 def parse_menu_from_ul(unordered_list):
     menu = list()
     for x in unordered_list:
-        price = x.find(
-            "div", class_="views-field views-field-field-price").string
-        name = x.find(
-            "div", class_="views-field views-field-field-dish").string
-        desc = x.find(
-            "div", class_="views-field views-field-field-description").string
+        price = extract_element(x, "price")
+        name = extract_element(x, "rett-new")
+        desc = extract_element(x, "description")
+        if not all((price, name, desc)):
+            continue
         menu.append(Meal(navn=name, pris=price, beskrivelse=desc))
 
     return menu
@@ -78,7 +80,6 @@ def print_menu(menu_dict):
 def string_menu(menu_dict):
     result = ""
     day = date.today().weekday()
-
     for place, menus in menu_dict.items():
         try:
             opening_hours = f"stenger *{OPENING_HOURS[place][day].strftime('%H:%M')}* i dag"
