@@ -38,7 +38,7 @@ class Lunchlady(object):
             response = "Whatever."
 
         if not response:
-            response = "They're all closed. How about you order some pizza instead?" + pizza_menu()
+            response = "They're all closed. How about you order some pizza instead?\n" + pizza_menu()
 
         slack_client.api_call("chat.postMessage", channel=channel,
                               unfurl_links=False,
