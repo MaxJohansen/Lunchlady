@@ -3,11 +3,25 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 from datetime import date
-from collections import namedtuple
 from itertools import takewhile
 from bettertime import HumanTime
 
-Meal = namedtuple("Meal", ["pris", "navn", "beskrivelse"])
+
+class Meal(object):
+    def __init__(self, price, name, description):
+        self.price = price
+        self.name = name
+        self.description = description
+
+    def __str__(self):
+        if self.description:
+            return f"*{self.price}* {self.name} ({self.description})"
+        else:
+            return f"*{self.price}* {self.name}"
+
+    def __lt__(self, other):
+        return self.price < other.price
+
 
 base_url = "http://samskipnaden.no/dagens-meny/day/1/{:%Y%m%d}"
 
@@ -62,12 +76,13 @@ def extract_element(navstring, fieldname):
 def parse_menu_from_ul(unordered_list):
     menu = list()
     for x in unordered_list:
+        # TODO: Put this in a MealFactory
         price = extract_element(x, "price")
         name = extract_element(x, "rett-new")
-        desc = extract_element(x, "description") or " "
+        desc = extract_element(x, "description")
         if not all((price, name)):
             continue
-        menu.append(Meal(navn=name, pris=price, beskrivelse=desc))
+        menu.append(Meal(price, name, desc))
 
     return menu
 
@@ -88,7 +103,7 @@ def string_menu(menu_dict):
         for menu, items in menus.items():
             result += f">*{menu}*\n"
             for meal in sorted(items):
-                result += f">• *{meal.pris}* {meal.navn} ({meal.beskrivelse})\n"
+                result += f">• {meal}\n"
     return result
 
 
