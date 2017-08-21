@@ -38,7 +38,6 @@ def get_menu(other_day=False):
     soup = BeautifulSoup(web_content, "html.parser")
     content = soup.find(
         "div", class_="view-content-rows").find_all("div", class_="view-grouping-title")
-
     das_dict = dict()
 
     for x in content:
@@ -65,8 +64,8 @@ def parse_menu_from_ul(unordered_list):
     for x in unordered_list:
         price = extract_element(x, "price")
         name = extract_element(x, "rett-new")
-        desc = extract_element(x, "description")
-        if not all((price, name, desc)):
+        desc = extract_element(x, "description") or " "
+        if not all((price, name)):
             continue
         menu.append(Meal(navn=name, pris=price, beskrivelse=desc))
 
