@@ -25,6 +25,7 @@ class Meal(object):
 
 base_url = "http://samskipnaden.no/dagens-meny/day/1/{:%Y%m%d}"
 
+# We ignore these cafeterias because they're inconveniently located
 SKIP_LIST = ("Markedet", "ILP-kafeen", "Musikkafeen")
 MH_mantor = HumanTime(17)
 MH_fre = HumanTime(16)

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import os
 import time
+import random
 import re
 from slackclient import SlackClient
 from lunchlady import get_menu, string_menu, pizza_menu
@@ -10,12 +11,18 @@ from datetime import datetime, timedelta
 BOT_ID = os.environ.get("BOT_ID")
 RESPONSE_DELAY = timedelta(minutes=1)
 
+
 class Lunchlady(object):
     def __init__(self):
         self.can_speak_again = datetime.now()
         self.name_match = re.compile("<@" + BOT_ID + ">|doris", flags=re.I)
         self.keywords = re.compile("lunsj|lunch|dinner|middag", flags=re.I)
         self.pizza = re.compile("pizza", flags=re.I)
+        self.other_responses = ["Whatever.",
+                                "Okey dokey.",
+                                "Yon meat, 'tis sweet as summer's wafting breeze.",
+                                "Mine ears are only open to the pleas of those who speak ye olde English.",
+                                "Speak up, kid."]
 
     def handle_command(self, command, channel):
         """
@@ -35,10 +42,10 @@ class Lunchlady(object):
         elif self.pizza.search(command):
             response = pizza_menu()
         else:
-            response = "Whatever."
+            response = random.choice(self.other_responses)
 
         if not response:
-            response = "They're all closed. How about you order some pizza instead?\n" + pizza_menu()
+            response = "There are no menus available right now. How about you order some pizza instead?\n" + pizza_menu()
 
         slack_client.api_call("chat.postMessage", channel=channel,
                               unfurl_links=False,
