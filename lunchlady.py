@@ -5,22 +5,24 @@ from urllib.request import urlopen
 from datetime import date
 from itertools import takewhile
 from bettertime import HumanTime
+from re import findall
 
 
 class Meal(object):
-    def __init__(self, price, name, description):
-        self.price = price
+    def __init__(self, prices, name, description):
+        self.prices = prices
         self.name = name
         self.description = description
 
     def __str__(self):
+        prices_string = " / ".join([str(x) for x in self.prices])
         if self.description:
-            return f"*{self.price}* {self.name} ({self.description})"
+            return f"*{prices_string},-* {self.name} ({self.description})"
         else:
-            return f"*{self.price}* {self.name}"
+            return f"*{prices_string},-* {self.name}"
 
     def __lt__(self, other):
-        return self.price < other.price
+        return self.prices < other.prices
 
 
 base_url = "http://samskipnaden.no/dagens-meny/day/1/{:%Y%m%d}"
@@ -96,7 +98,7 @@ def parse_menu_from_ul(unordered_list):
     menu = list()
     for x in unordered_list:
         # TODO: Put this in a MealFactory
-        price = extract_element(x, "price")
+        price = [int(x) for x in findall("\d+", extract_element(x, "price"))]
         name = extract_element(x, "rett-new")
         desc = extract_element(x, "description")
         if not all((price, name)):
