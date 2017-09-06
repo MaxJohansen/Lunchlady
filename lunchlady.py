@@ -31,14 +31,22 @@ MH_mantor = HumanTime(17)
 MH_fre = HumanTime(16)
 Teo_mantor = HumanTime(17, 30)
 Teo_fre = HumanTime(17)
+Bazinga = HumanTime(18)
+Mat_mantor = HumanTime(17)
+Mat_fre = HumanTime(16)
 
 MH_OPENING_HOURS = {0: MH_mantor, 1: MH_mantor,
                     2: MH_mantor, 3: MH_mantor, 4: MH_fre}
 TEO_OPENING_HOURS = {0: Teo_mantor, 1: Teo_mantor,
                      2: Teo_mantor, 3: Teo_mantor, 4: Teo_fre}
+BAZINGA_OPENING_HOURS = {n: Bazinga for n in range(5)}
+MAT_OPENING_HOURS = {0: Mat_mantor, 1: Mat_mantor,
+                     2: Mat_mantor, 3: Mat_mantor, 4: Mat_fre}
 
 OPENING_HOURS = {"MH-kafeen": MH_OPENING_HOURS,
-                 "Teorifagskafeen": TEO_OPENING_HOURS}
+                 "Teorifagskafeen": TEO_OPENING_HOURS,
+                 "BAZINGA": BAZINGA_OPENING_HOURS,
+                 "MAT.": MAT_OPENING_HOURS}
 
 PIZZA_PLACES = {"Pizzabakeren": {"URL": "https://www.pizzabakeren.no/pizzameny", "Phone": "77 68 06 10" },
                 "Dolly Dimples": {"URL": "https://www.dolly.no/meny/pizza", "Phone": "0 44 40"},
@@ -51,27 +59,37 @@ def get_menu(other_day=False):
     # print(f"Fetching {base_url.format(day)}...")
     web_content = urlopen(base_url.format(day)).read()
     soup = BeautifulSoup(web_content, "html.parser")
-    content = soup.find(
+    daily_menus = soup.find(
         "div", class_="view-content-rows").find_all("div", class_="view-grouping-title")
     das_dict = dict()
 
-    for x in content:
+    for x in daily_menus:
         if x.string in SKIP_LIST:
             # print("Skipping ", x.string)
             continue
         das_dict[x.string] = dict()
-        for submenu in takewhile(lambda x: x not in content, x.find_next_siblings("div")):
+        for submenu in takewhile(lambda x: x not in daily_menus, x.find_next_siblings("div")):
             try:
                 mealtime = submenu.find("h3").string
             except AttributeError:
                 continue
             das_dict[x.string][mealtime] = parse_menu_from_ul(submenu("li"))
 
+    static_menus = soup.find(
+        "div", class_="views-view--dish-of-the-day-calendar--attachment-1").find_all("div", class_="view-grouping-title")
+
+    for x in static_menus:
+        if x.string in SKIP_LIST:
+            continue
+        das_dict[x.string] = dict()
+        for submenu in takewhile(lambda x: x not in static_menus, x.find_next_siblings("div")):
+            das_dict[x.string]["Fast meny"] = parse_menu_from_ul(submenu("li"))
+
     return das_dict
 
 
 def extract_element(navstring, fieldname):
-    return navstring.find("div", class_=f"views-field views-field-field-{fieldname}").find("div").string
+    return navstring.find("div", class_=f"views-field-field-{fieldname}").find("div").string
 
 
 def parse_menu_from_ul(unordered_list):
