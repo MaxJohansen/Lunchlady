@@ -77,6 +77,7 @@ def daily_menu():
             except AttributeError:
                 continue
             das_dict[x.string][mealtime] = parse_menu_from_ul(submenu("li"))
+    return das_dict
 
 
 def bazinga_menu():

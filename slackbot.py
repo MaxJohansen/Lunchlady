@@ -8,7 +8,7 @@ from slackclient import SlackClient
 from lunchlady import string_menu, daily_menu, pizza_menu, bazinga_menu, mat_menu
 from datetime import datetime, timedelta
 
-BOT_ID = os.environ.get("BOT_ID")
+BOT_ID = "10" #os.environ.get("BOT_ID")
 RESPONSE_DELAY = timedelta(minutes=1)
 
 
@@ -16,11 +16,11 @@ class Lunchlady(object):
     def __init__(self):
         self.can_speak_again = datetime.now()
         self.name_match = re.compile("<@" + BOT_ID + ">|doris", flags=re.I)
-        self.commands = {
-            re.compile("lunsj|lunch|dinner|middag", flags=re.I): daily_menu,
-            re.compile("pizza", flags=re.I): pizza_menu,
-            re.compile("bazinga", flags=re.I): bazinga_menu,
-            re.compile("mat", flags=re.I): mat_menu
+        self.keywords = {
+            "lunsj|lunch|dinner|middag": daily_menu,
+            "pizza": pizza_menu,
+            "bazinga": bazinga_menu,
+            "mat": mat_menu
             }
         self.other_responses = ["Whatever.",
                                 "Okey dokey.",
@@ -42,9 +42,9 @@ class Lunchlady(object):
 
         response = ""
         print(command)
-        for string, menu in self.commands.values():
-            if string.search(command):
-                response = menu()
+        for string, menu in self.keywords.items():
+            if re.compile(string, flags=re.I).search(command):
+                response = string_menu(menu())
                 break
         else:
             response = random.choice(self.other_responses)
