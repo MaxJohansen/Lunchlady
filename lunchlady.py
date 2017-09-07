@@ -5,7 +5,7 @@ from urllib.request import urlopen
 from datetime import date
 from itertools import takewhile
 from bettertime import HumanTime
-from re import findall
+import re
 
 
 class Meal(object):
@@ -55,13 +55,14 @@ PIZZA_PLACES = {"Pizzabakeren": {"URL": "https://www.pizzabakeren.no/pizzameny",
                 "Peppe's Pizza": {"URL": "https://www.peppes.no/pp13/wicket/bookmarkable/no.peppes.pepp2013.bestill.pizza.PeppesPizzaIntroPage?14", "Phone": "22 22 55 55"},
                 "Retro House": {"URL": "https://www.facebook.com/Retro-Pizzeria-910569502345280/", "Phone": "77 67 77 77"}}
 
-
-def get_menu(other_day=False):
-    day = other_day or date.today()
+def get_soup():
     # print(f"Fetching {base_url.format(day)}...")
-    web_content = urlopen(base_url.format(day)).read()
-    soup = BeautifulSoup(web_content, "html.parser")
-    daily_menus = soup.find(
+    web_content = urlopen(base_url.format(date.today())).read()
+    return BeautifulSoup(web_content, "html.parser")
+
+
+def daily_menu():
+    daily_menus = get_soup().find(
         "div", class_="view-content-rows").find_all("div", class_="view-grouping-title")
     das_dict = dict()
 
@@ -77,17 +78,29 @@ def get_menu(other_day=False):
                 continue
             das_dict[x.string][mealtime] = parse_menu_from_ul(submenu("li"))
 
-    static_menus = soup.find(
+
+def bazinga_menu():
+    wanted = re.compile("bazinga", flags=re.I)
+    static_menus = get_soup().find(
         "div", class_="views-view--dish-of-the-day-calendar--attachment-1").find_all("div", class_="view-grouping-title")
 
     for x in static_menus:
-        if x.string in SKIP_LIST:
+        if not wanted.search(x.string):
             continue
-        das_dict[x.string] = dict()
         for submenu in takewhile(lambda x: x not in static_menus, x.find_next_siblings("div")):
-            das_dict[x.string]["Fast meny"] = parse_menu_from_ul(submenu("li"))
+            return {x.string: {"Fast meny": parse_menu_from_ul(submenu("li"))}}
 
-    return das_dict
+
+def mat_menu():
+    wanted = re.compile("mat", flags=re.I)
+    static_menus = get_soup().find(
+        "div", class_="views-view--dish-of-the-day-calendar--attachment-1").find_all("div", class_="view-grouping-title")
+
+    for x in static_menus:
+        if not wanted.search(x.string):
+            continue
+        for submenu in takewhile(lambda x: x not in static_menus, x.find_next_siblings("div")):
+            return {x.string: {"Fast meny": parse_menu_from_ul(submenu("li"))}}
 
 
 def extract_element(navstring, fieldname):
@@ -98,7 +111,7 @@ def parse_menu_from_ul(unordered_list):
     menu = list()
     for x in unordered_list:
         # TODO: Put this in a MealFactory
-        price = [int(x) for x in findall("\d+", extract_element(x, "price"))]
+        price = [int(x) for x in re.findall("\d+", extract_element(x, "price"))]
         name = extract_element(x, "rett-new")
         desc = extract_element(x, "description")
         if not all((price, name)):

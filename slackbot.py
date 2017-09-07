@@ -5,7 +5,7 @@ import time
 import random
 import re
 from slackclient import SlackClient
-from lunchlady import get_menu, string_menu, pizza_menu
+from lunchlady import string_menu, daily_menu, pizza_menu, bazinga_menu, mat_menu
 from datetime import datetime, timedelta
 
 BOT_ID = os.environ.get("BOT_ID")
@@ -16,13 +16,18 @@ class Lunchlady(object):
     def __init__(self):
         self.can_speak_again = datetime.now()
         self.name_match = re.compile("<@" + BOT_ID + ">|doris", flags=re.I)
-        self.keywords = re.compile("lunsj|lunch|dinner|middag", flags=re.I)
-        self.pizza = re.compile("pizza", flags=re.I)
+        self.commands = {
+            re.compile("lunsj|lunch|dinner|middag", flags=re.I): daily_menu,
+            re.compile("pizza", flags=re.I): pizza_menu,
+            re.compile("bazinga", flags=re.I): bazinga_menu,
+            re.compile("mat", flags=re.I): mat_menu
+            }
         self.other_responses = ["Whatever.",
                                 "Okey dokey.",
                                 "Yon meat, 'tis sweet as summer's wafting breeze.",
                                 "Mine ears are only open to the pleas of those who speak ye olde English.",
-                                "Speak up, kid."]
+                                "Speak up, kid.",
+                                "Your mother wears army boots."]
 
     def handle_command(self, command, channel):
         """
@@ -37,10 +42,10 @@ class Lunchlady(object):
 
         response = ""
         print(command)
-        if self.keywords.search(command):
-            response = string_menu(get_menu())
-        elif self.pizza.search(command):
-            response = pizza_menu()
+        for string, menu in self.commands.values():
+            if string.search(command):
+                response = menu()
+                break
         else:
             response = random.choice(self.other_responses)
 
@@ -62,6 +67,7 @@ class Lunchlady(object):
                 if output and 'text' in output and self.name_match.search(output['text']):
                     return output['text'], output['channel']
         return None, None
+
 
 def reconnect(bot):
     if slack_client.rtm_connect():
