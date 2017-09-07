@@ -11,15 +11,15 @@ import re
 class Meal(object):
     def __init__(self, prices, name, description):
         self.prices = prices
+        self.price_string = " / ".join([str(x) for x in prices])
         self.name = name
         self.description = description
 
     def __str__(self):
-        prices_string = " / ".join([str(x) for x in self.prices])
         if self.description:
-            return f"*{prices_string},-* {self.name} ({self.description})"
+            return f"*{self.price_string},-* {self.name} ({self.description})"
         else:
-            return f"*{prices_string},-* {self.name}"
+            return f"*{self.price_string},-* {self.name}"
 
     def __lt__(self, other):
         return self.prices < other.prices
@@ -29,6 +29,8 @@ base_url = "http://samskipnaden.no/dagens-meny/day/1/{:%Y%m%d}"
 
 # We ignore these cafeterias because they're inconveniently located
 SKIP_LIST = ("Markedet", "ILP-kafeen", "Musikkafeen")
+
+# TODO: Implement a better solution for opening hours. This hardcoding is awful.
 MH_mantor = HumanTime(17)
 MH_fre = HumanTime(16)
 Teo_mantor = HumanTime(17, 30)
@@ -54,6 +56,7 @@ PIZZA_PLACES = {"Pizzabakeren": {"URL": "https://www.pizzabakeren.no/pizzameny",
                 "Dolly Dimples": {"URL": "https://www.dolly.no/meny/pizza", "Phone": "0 44 40"},
                 "Peppe's Pizza": {"URL": "https://www.peppes.no/pp13/wicket/bookmarkable/no.peppes.pepp2013.bestill.pizza.PeppesPizzaIntroPage?14", "Phone": "22 22 55 55"},
                 "Retro House": {"URL": "https://www.facebook.com/Retro-Pizzeria-910569502345280/", "Phone": "77 67 77 77"}}
+
 
 def get_soup():
     # print(f"Fetching {base_url.format(day)}...")
