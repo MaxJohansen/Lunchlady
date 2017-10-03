@@ -16,10 +16,13 @@ class Meal(object):
         self.description = description
 
     def __str__(self):
+        res = f"{self.name}"
+        if self.price_string:
+            res = f"*{self.price_string},-* " + res
         if self.description:
-            return f"*{self.price_string},-* {self.name} ({self.description})"
-        else:
-            return f"*{self.price_string},-* {self.name}"
+            res = res + f" ({self.description})"
+
+        return res
 
     def __lt__(self, other):
         return self.prices < other.prices
@@ -108,7 +111,8 @@ def mat_menu():
 
 
 def extract_element(navstring, fieldname):
-    return navstring.find("div", class_=f"views-field-field-{fieldname}").find("div").string
+    res = navstring.find("div", class_=f"views-field-field-{fieldname}").find("div").string
+    return res or "Nothing"
 
 
 def parse_menu_from_ul(unordered_list):
@@ -118,7 +122,7 @@ def parse_menu_from_ul(unordered_list):
         price = [int(x) for x in re.findall("\d+", extract_element(x, "price"))]
         name = extract_element(x, "rett-new")
         desc = extract_element(x, "description")
-        if not all((price, name)):
+        if not name:
             continue
         menu.append(Meal(price, name, desc))
 
@@ -154,5 +158,5 @@ def pizza_menu():
 
 if __name__ == "__main__":
     day = date.today()
-    menu = get_menu(day)
+    menu = daily_menu()
     print_menu(menu)
