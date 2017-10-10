@@ -111,17 +111,23 @@ def mat_menu():
 
 
 def extract_element(navstring, fieldname):
-    res = navstring.find("div", class_=f"views-field-field-{fieldname}").find("div").string
-    return res or "Nothing"
+    try:
+        res = navstring.find("div", class_=f"views-field-{fieldname}").find("div").string
+    except AttributeError:
+        res = navstring.find("div", class_=f"views-field-{fieldname}").find("strong").string
+
+    if not res:
+        res = navstring.find("div", class_="views-field-nothing").find("strong").string
+    return res.strip() or "Nothing"
 
 
 def parse_menu_from_ul(unordered_list):
     menu = list()
     for x in unordered_list:
         # TODO: Put this in a MealFactory
-        price = [int(x) for x in re.findall("\d+", extract_element(x, "price"))]
-        name = extract_element(x, "rett-new")
-        desc = extract_element(x, "description")
+        price = [int(x) for x in re.findall("\d+", extract_element(x, "field-price"))]
+        name = extract_element(x, "nothing")
+        desc = extract_element(x, "field-description")
         if not name:
             continue
         menu.append(Meal(price, name, desc))
