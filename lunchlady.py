@@ -55,7 +55,7 @@ OPENING_HOURS = {"MH-kafeen": MH_OPENING_HOURS,
                  "BAZINGA": BAZINGA_OPENING_HOURS,
                  "MAT.": MAT_OPENING_HOURS}
 
-PIZZA_PLACES = {"Pizzabakeren": {"URL": "https://www.pizzabakeren.no/pizzameny", "Phone": "77 68 06 10" },
+PIZZA_PLACES = {"Pizzabakeren": {"URL": "https://www.pizzabakeren.no/pizzameny", "Phone": "77 68 06 10"},
                 "Dolly Dimples": {"URL": "https://www.dolly.no/meny/pizza", "Phone": "0 44 40"},
                 "Peppe's Pizza": {"URL": "https://www.peppes.no/pp13/wicket/bookmarkable/no.peppes.pepp2013.bestill.pizza.PeppesPizzaIntroPage?14", "Phone": "22 22 55 55"},
                 "Retro House": {"URL": "https://www.facebook.com/Retro-Pizzeria-910569502345280/", "Phone": "77 67 77 77"}}
@@ -112,12 +112,15 @@ def mat_menu():
 
 def extract_element(navstring, fieldname):
     try:
-        res = navstring.find("div", class_=f"views-field-{fieldname}").find("div").string
+        res = navstring.find(
+            "div", class_=f"views-field-{fieldname}").find("div").string
     except AttributeError:
-        res = navstring.find("div", class_=f"views-field-{fieldname}").find("strong").string
+        res = navstring.find(
+            "div", class_=f"views-field-{fieldname}").find("strong").string
 
     if not res:
-        res = navstring.find("div", class_="views-field-nothing").find("strong").string
+        res = navstring.find(
+            "div", class_="views-field-nothing").find("strong").string
     return res.strip() or "Nothing"
 
 
@@ -125,7 +128,8 @@ def parse_menu_from_ul(unordered_list):
     menu = list()
     for x in unordered_list:
         # TODO: Put this in a MealFactory
-        price = [int(x) for x in re.findall("\d+", extract_element(x, "field-price"))]
+        price = [int(x) for x in re.findall(
+            "\d+", extract_element(x, "field-price"))]
         name = extract_element(x, "nothing")
         desc = extract_element(x, "field-description")
         if not name:
@@ -140,6 +144,8 @@ def print_menu(menu_dict):
 
 
 def string_menu(menu_dict):
+    if isinstance(menu_dict, (str)):
+        return menu_dict
     result = ""
     day = date.today().weekday()
     for place, menus in menu_dict.items():
@@ -147,7 +153,8 @@ def string_menu(menu_dict):
             opening_hours = f"stenger *{OPENING_HOURS[place][day].strftime('%H:%M')}* i dag"
         except KeyError:
             opening_hours = "stengt i dag"
-        result += f"*{place}* ({opening_hours}) serverer:\n".format(place, opening_hours)
+        result += f"*{place}* ({opening_hours}) serverer:\n".format(place,
+                                                                    opening_hours)
         for menu, items in menus.items():
             result += f">*{menu}*\n"
             for meal in sorted(items):
@@ -164,5 +171,5 @@ def pizza_menu():
 
 if __name__ == "__main__":
     day = date.today()
-    menu = daily_menu()
+    menu = pizza_menu()
     print_menu(menu)
