@@ -49,6 +49,7 @@ class Lunchlady(object):
                 break
         else if command is in self.jokeword:
             response = joke_menu()
+            break
         else:
             response = random.choice(self.other_responses)
 
