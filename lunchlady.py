@@ -5,6 +5,7 @@ from urllib.request import urlopen
 from datetime import date
 from itertools import takewhile
 from bettertime import HumanTime
+from requests import get
 import re
 
 
@@ -29,6 +30,9 @@ class Meal(object):
 
 
 base_url = "http://samskipnaden.no/dagens-meny/day/1/{:%Y%m%d}"
+
+joke_url = "https://icanhazdadjoke.com"
+joke_header = {'Accept': 'text/plain'}
 
 # We ignore these cafeterias because they're inconveniently located
 SKIP_LIST = ("Markedet", "ILP-kafeen", "Musikkafeen")
@@ -168,8 +172,13 @@ def pizza_menu():
         result += f">• <{details['URL']}|{place}>: {details['Phone']}\n"
     return result
 
+def joke_menu():
+    """Gets a joke from icanhazdadjoke-API"""
+    joke = get(joke_url, headers = joke_header)
 
+    return joke.content.decode("utf-8")
+    
 if __name__ == "__main__":
     day = date.today()
-    menu = pizza_menu()
-    print_menu(menu)
+    joke = joke_menu()
+    print(joke)
