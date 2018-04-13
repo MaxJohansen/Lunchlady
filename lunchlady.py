@@ -32,6 +32,8 @@ class Meal(object):
 base_url = "http://samskipnaden.no/dagens-meny/day/1/{:%Y%m%d}"
 
 joke_url = "https://icanhazdadjoke.com"
+stronk_joke_url = 'http://api.icndb.com/jokes/random?firstName=Doris&amp&lastName=The+lunchlady'
+
 joke_header = {'Accept': 'text/plain'}
 
 # We ignore these cafeterias because they're inconveniently located
@@ -177,8 +179,16 @@ def joke_menu():
     joke = get(joke_url, headers = joke_header)
 
     return joke.content.decode("utf-8")
+
+
+def stronk_joke_menu():
+    """Gets a converted chucknorris-joke from http://www.icndb.com/api/"""
+    joke = get(stronk_joke_url, headers = joke_header)
+
+    return joke.json()["value"]["joke"]
+    #return joke.decode("utf-8")
     
 if __name__ == "__main__":
     day = date.today()
-    joke = joke_menu()
+    joke = stronk_joke_menu()
     print(joke)

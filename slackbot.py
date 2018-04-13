@@ -5,7 +5,7 @@ import time
 import random
 import re
 from slackclient import SlackClient
-from lunchlady import string_menu, daily_menu, pizza_menu, bazinga_menu, mat_menu, joke_menu
+from lunchlady import string_menu, daily_menu, pizza_menu, bazinga_menu, mat_menu, joke_menu, stronk_joke_menu
 from datetime import datetime, timedelta
 
 BOT_ID = "10" #os.environ.get("BOT_ID")
@@ -21,8 +21,9 @@ class Lunchlady(object):
             "pizza": pizza_menu,
             "bazinga": bazinga_menu,
             "mat": mat_menu,
+            "stronk": stronk_joke_menu,
+            "joke": joke_menu
             }
-        self.jokeword =["joke"]
         self.other_responses = ["Whatever.",
                                 "Okey dokey.",
                                 "Yon meat, 'tis sweet as summer's wafting breeze.",
@@ -47,9 +48,6 @@ class Lunchlady(object):
             if re.compile(string, flags=re.I).search(command):
                 response = string_menu(menu())
                 break
-        else if command is in self.jokeword:
-            response = joke_menu()
-            break
         else:
             response = random.choice(self.other_responses)
 
