@@ -7,8 +7,6 @@ chatter_lines = path.join(dirname, "lines.json")
 
 
 class Chatter(object):
-    def __init__(self):
-        self.lines = loads(open(chatter_lines).read())
-
     def response(self):
-        return random.choice(self.lines)
+        lines = loads(open(chatter_lines).read())
+        return random.choice(lines)
