@@ -1,0 +1,4 @@
+[
+  "test_core.py::TestCore::test_weekday",
+  "test_core.py::TestCore::test_weekend"
+]

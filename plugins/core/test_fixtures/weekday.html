@@ -1,0 +1,2120 @@
+<!DOCTYPE html>
+<html lang="nb" dir="ltr" xmlns:article="http://ogp.me/ns/article#" xmlns:book="http://ogp.me/ns/book#" xmlns:product="http://ogp.me/ns/product#"
+  xmlns:profile="http://ogp.me/ns/profile#" xmlns:video="http://ogp.me/ns/video#" prefix="content: http://purl.org/rss/1.0/modules/content/  dc: http://purl.org/dc/terms/  foaf: http://xmlns.com/foaf/0.1/  og: http://ogp.me/ns#  rdfs: http://www.w3.org/2000/01/rdf-schema#  schema: http://schema.org/  sioc: http://rdfs.org/sioc/ns#  sioct: http://rdfs.org/sioc/types#  skos: http://www.w3.org/2004/02/skos/core#  xsd: http://www.w3.org/2001/XMLSchema# ">
+
+<head>
+  <meta charset="utf-8" />
+  <script type="text/javascript">
+    window.NREUM || (NREUM = {}), __nr_require = function (e, t, n) {
+      function r(n) {
+        if (!t[n]) {
+          var o = t[n] = {
+            exports: {}
+          };
+          e[n][0].call(o.exports, function (t) {
+            var o = e[n][1][t];
+            return r(o || t)
+          }, o, o.exports)
+        }
+        return t[n].exports
+      }
+      if ("function" == typeof __nr_require) return __nr_require;
+      for (var o = 0; o < n.length; o++) r(n[o]);
+      return r
+    }({
+      1: [function (e, t, n) {
+        function r() {}
+
+        function o(e, t, n) {
+          return function () {
+            return i(e, [f.now()].concat(u(arguments)), t ? null : this, n), t ? void 0 : this
+          }
+        }
+        var i = e("handle"),
+          a = e(2),
+          u = e(3),
+          c = e("ee").get("tracer"),
+          f = e("loader"),
+          s = NREUM;
+        "undefined" == typeof window.newrelic && (newrelic = s);
+        var p = ["setPageViewName", "setCustomAttribute", "setErrorHandler", "finished", "addToTrace",
+            "inlineHit", "addRelease"
+          ],
+          d = "api-",
+          l = d + "ixn-";
+        a(p, function (e, t) {
+            s[t] = o(d + t, !0, "api")
+          }), s.addPageAction = o(d + "addPageAction", !0), s.setCurrentRouteName = o(d + "routeName", !0), t.exports =
+          newrelic, s.interaction = function () {
+            return (new r).get()
+          };
+        var m = r.prototype = {
+          createTracer: function (e, t) {
+            var n = {},
+              r = this,
+              o = "function" == typeof t;
+            return i(l + "tracer", [f.now(), e, n], r),
+              function () {
+                if (c.emit((o ? "" : "no-") + "fn-start", [f.now(), r, o], n), o) try {
+                  return t.apply(this, arguments)
+                } catch (e) {
+                  throw c.emit("fn-err", [arguments, this, e], n), e
+                } finally {
+                  c.emit("fn-end", [f.now()], n)
+                }
+              }
+          }
+        };
+        a("setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","), function (e, t) {
+          m[t] = o(l + t)
+        }), newrelic.noticeError = function (e) {
+          "string" == typeof e && (e = new Error(e)), i("err", [e, f.now()])
+        }
+      }, {}],
+      2: [function (e, t, n) {
+        function r(e, t) {
+          var n = [],
+            r = "",
+            i = 0;
+          for (r in e) o.call(e, r) && (n[i] = t(r, e[r]), i += 1);
+          return n
+        }
+        var o = Object.prototype.hasOwnProperty;
+        t.exports = r
+      }, {}],
+      3: [function (e, t, n) {
+        function r(e, t, n) {
+          t || (t = 0), "undefined" == typeof n && (n = e ? e.length : 0);
+          for (var r = -1, o = n - t || 0, i = Array(o < 0 ? 0 : o); ++r < o;) i[r] = e[t + r];
+          return i
+        }
+        t.exports = r
+      }, {}],
+      4: [function (e, t, n) {
+        t.exports = {
+          exists: "undefined" != typeof window.performance && window.performance.timing && "undefined" !=
+            typeof window.performance.timing.navigationStart
+        }
+      }, {}],
+      ee: [function (e, t, n) {
+        function r() {}
+
+        function o(e) {
+          function t(e) {
+            return e && e instanceof r ? e : e ? c(e, u, i) : i()
+          }
+
+          function n(n, r, o, i) {
+            if (!d.aborted || i) {
+              e && e(n, r, o);
+              for (var a = t(o), u = m(n), c = u.length, f = 0; f < c; f++) u[f].apply(a, r);
+              var p = s[y[n]];
+              return p && p.push([b, n, r, a]), a
+            }
+          }
+
+          function l(e, t) {
+            v[e] = m(e).concat(t)
+          }
+
+          function m(e) {
+            return v[e] || []
+          }
+
+          function w(e) {
+            return p[e] = p[e] || o(n)
+          }
+
+          function g(e, t) {
+            f(e, function (e, n) {
+              t = t || "feature", y[n] = t, t in s || (s[t] = [])
+            })
+          }
+          var v = {},
+            y = {},
+            b = {
+              on: l,
+              emit: n,
+              get: w,
+              listeners: m,
+              context: t,
+              buffer: g,
+              abort: a,
+              aborted: !1
+            };
+          return b
+        }
+
+        function i() {
+          return new r
+        }
+
+        function a() {
+          (s.api || s.feature) && (d.aborted = !0, s = d.backlog = {})
+        }
+        var u = "nr@context",
+          c = e("gos"),
+          f = e(2),
+          s = {},
+          p = {},
+          d = t.exports = o();
+        d.backlog = s
+      }, {}],
+      gos: [function (e, t, n) {
+        function r(e, t, n) {
+          if (o.call(e, t)) return e[t];
+          var r = n();
+          if (Object.defineProperty && Object.keys) try {
+            return Object.defineProperty(e, t, {
+              value: r,
+              writable: !0,
+              enumerable: !1
+            }), r
+          } catch (i) {}
+          return e[t] = r, r
+        }
+        var o = Object.prototype.hasOwnProperty;
+        t.exports = r
+      }, {}],
+      handle: [function (e, t, n) {
+        function r(e, t, n, r) {
+          o.buffer([e], r), o.emit(e, t, n)
+        }
+        var o = e("ee").get("handle");
+        t.exports = r, r.ee = o
+      }, {}],
+      id: [function (e, t, n) {
+        function r(e) {
+          var t = typeof e;
+          return !e || "object" !== t && "function" !== t ? -1 : e === window ? 0 : a(e, i, function () {
+            return o++
+          })
+        }
+        var o = 1,
+          i = "nr@id",
+          a = e("gos");
+        t.exports = r
+      }, {}],
+      loader: [function (e, t, n) {
+        function r() {
+          if (!x++) {
+            var e = h.info = NREUM.info,
+              t = d.getElementsByTagName("script")[0];
+            if (setTimeout(s.abort, 3e4), !(e && e.licenseKey && e.applicationID && t)) return s.abort();
+            f(y, function (t, n) {
+              e[t] || (e[t] = n)
+            }), c("mark", ["onload", a() + h.offset], null, "api");
+            var n = d.createElement("script");
+            n.src = "https://" + e.agent, t.parentNode.insertBefore(n, t)
+          }
+        }
+
+        function o() {
+          "complete" === d.readyState && i()
+        }
+
+        function i() {
+          c("mark", ["domContent", a() + h.offset], null, "api")
+        }
+
+        function a() {
+          return E.exists && performance.now ? Math.round(performance.now()) : (u = Math.max((new Date).getTime(),
+            u)) - h.offset
+        }
+        var u = (new Date).getTime(),
+          c = e("handle"),
+          f = e(2),
+          s = e("ee"),
+          p = window,
+          d = p.document,
+          l = "addEventListener",
+          m = "attachEvent",
+          w = p.XMLHttpRequest,
+          g = w && w.prototype;
+        NREUM.o = {
+          ST: setTimeout,
+          SI: p.setImmediate,
+          CT: clearTimeout,
+          XHR: w,
+          REQ: p.Request,
+          EV: p.Event,
+          PR: p.Promise,
+          MO: p.MutationObserver
+        };
+        var v = "" + location,
+          y = {
+            beacon: "bam.nr-data.net",
+            errorBeacon: "bam.nr-data.net",
+            agent: "js-agent.newrelic.com/nr-1071.min.js"
+          },
+          b = w && g && g[l] && !/CriOS/.test(navigator.userAgent),
+          h = t.exports = {
+            offset: u,
+            now: a,
+            origin: v,
+            features: {},
+            xhrWrappable: b
+          };
+        e(1), d[l] ? (d[l]("DOMContentLoaded", i, !1), p[l]("load", r, !1)) : (d[m]("onreadystatechange", o), p[
+          m]("onload", r)), c("mark", ["firstbyte", u], null, "api");
+        var x = 0,
+          E = e(4)
+      }, {}]
+    }, {}, ["loader"]);
+
+  </script>
+  <script>
+    (function (i, s, o, g, r, a, m) {
+      i["GoogleAnalyticsObject"] = r;
+      i[r] = i[r] || function () {
+        (i[r].q = i[r].q || []).push(arguments)
+      }, i[r].l = 1 * new Date();
+      a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+      a.async = 1;
+      a.src = g;
+      m.parentNode.insertBefore(a, m)
+    })(window, document, "script", "https://www.google-analytics.com/analytics.js", "ga");
+    ga("create", "UA-9722406-1", {
+      "cookieDomain": "auto"
+    });
+    ga("set", "anonymizeIp", true);
+    ga("send", "pageview");
+
+  </script>
+  <meta name="title" content="Dagens retter | Samskipnaden.no" />
+  <meta property="og:site_name" content="Norges Arktiske Studentsamskipnad" />
+  <meta name="Generator" content="Drupal 8 (https://www.drupal.org)" />
+  <meta name="MobileOptimized" content="width" />
+  <meta name="HandheldFriendly" content="true" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="shortcut icon" href="/themes/samskipnaden/favicon.ico" type="image/vnd.microsoft.icon" />
+
+  <title>Dagens retter | Samskipnaden.no</title>
+  <link rel="stylesheet" href="/sites/default/files/css/css_AiBdi_vzNrLgr1EgL5mqWp6mknfzy4AoWBUBHCreOw0.css?p7gpud" media="all"
+  />
+  <link rel="stylesheet" href="/sites/default/files/css/css_Y4-w8m2WRl9ea9d337WUnB5mIuDT4mpj4FMGwf8PWnU.css?p7gpud" media="all"
+  />
+  <link rel="stylesheet" href="/sites/default/files/css/css_nCi3uQB4VLfMAIpbxzxP1N6XBGM-xeFBEaJbkGm80Vk.css?p7gpud" media="print"
+  />
+
+
+  <!--[if lte IE 8]>
+<script src="/sites/default/files/js/js_VtafjXmRvoUgAzqzYTA3Wrjkx9wcWhjP0G4ZnnqRamA.js"></script>
+<![endif]-->
+
+</head>
+
+<body class="page-dagens-meny-day-1 section-dagens-meny-day-1 role--anonymous with-subnav sidebar-first one-sidebar">
+  <div id="skip">
+    <a href="#main-menu" class="visually-hidden focusable skip-link">
+      Skip to main navigation
+    </a>
+  </div>
+
+  <div class="dialog-off-canvas-main-canvas" data-off-canvas-main-canvas>
+    <div class="layout-container">
+
+      <!-- ______________________ HEADER _______________________ -->
+
+      <header id="header">
+        <hgroup id="header-top-region">
+          <div>
+
+            <nav role="navigation" aria-labelledby="block-campus-menu" id="block-campus" class="block block-menu navigation menu--campus">
+
+              <h2 class="visually-hidden" id="block-campus-menu">Campus</h2>
+
+
+              <span class="change-loc">Endre studiested</span>
+
+              <ul data-block-id="block-campus" class="menu">
+                <li class="menu-item is-open">
+                  <a href="/tromso" data-drupal-link-system-path="node/2">Tromsø</a>
+                </li>
+                <li class="menu-item is-open">
+                  <a href="/alta" data-drupal-link-system-path="node/3">Alta</a>
+                </li>
+                <li class="menu-item is-open">
+                  <a href="/harstad" data-drupal-link-system-path="node/5">Harstad</a>
+                </li>
+                <li class="menu-item is-open">
+                  <a href="/narvik" data-drupal-link-system-path="node/6">Narvik</a>
+                </li>
+                <li class="menu-item is-open">
+                  <a href="/hammerfest" data-drupal-link-system-path="node/4">Hammerfest</a>
+                </li>
+                <li class="menu-item is-open">
+                  <a href="/svalbard" data-drupal-link-system-path="node/7">Svalbard</a>
+                </li>
+              </ul>
+
+
+
+            </nav>
+            <div class="language-switcher-language-url block-language block-language-blocklanguage-interface" id="block-languageswitcher"
+              role="navigation">
+
+
+              <ul data-block-id="block-languageswitcher" class="links">
+                <li hreflang="nb" data-drupal-link-system-path="dagens-meny/day/1" class="nb is-active">
+                  <a href="/dagens-meny/day/1" class="language-link is-active" hreflang="nb" data-drupal-link-system-path="dagens-meny/day/1">Norwegian Bokmål</a>
+                </li>
+                <li hreflang="en" data-drupal-link-system-path="dagens-meny/day/1" class="en">
+                  <a href="/en/dagens-meny/day/1" class="language-link" hreflang="en" data-drupal-link-system-path="dagens-meny/day/1">English</a>
+                </li>
+              </ul>
+            </div>
+
+          </div>
+
+        </hgroup>
+        <hgroup id="header-region">
+          <div>
+            <div id="block-samskipnaden-branding" class="block-system block-system-branding-block">
+
+
+              <a href="/" title="Hjem" rel="home" class="site-logo">
+                <img src="/themes/samskipnaden/logo.svg" alt="Hjem" />
+              </a>
+              <div class="site-name">
+                <a href="/" title="Hjem" rel="home">Samskipnaden.no</a>
+              </div>
+            </div>
+            <div id="block-campusnameblock" class="block-samskipnaden-util block-campus-name-block">
+
+
+              <h2>
+                <a href="/tromso">Tromsø</a>
+              </h2>
+            </div>
+
+          </div>
+
+          <span class="dnav">Meny</span>
+        </hgroup>
+        <hgroup id="header-bottom-region">
+          <div>
+            <div class="views-exposed-form block-views block-views-exposed-filter-blocksearch-api-search-2-page-1" data-drupal-selector="views-exposed-form-search-api-search-2-page-1"
+              id="block-exposedformsearch-api-search-2page-1">
+
+
+              <form data-block-id="block-exposedformsearch-api-search-2page-1" action="/search" method="get" id="views-exposed-form-search-api-search-2-page-1"
+                accept-charset="UTF-8">
+                <div class="js-form-item form-item js-form-type-textfield form-item-search js-form-item-search">
+                  <label for="edit-search">Søketekst</label>
+                  <input placeholder="Hva søker du etter?" data-drupal-selector="edit-search" type="text" id="edit-search" name="search" value=""
+                    size="25" maxlength="128" class="form-text" />
+
+                </div>
+                <input data-drupal-selector="edit-campus-0" type="hidden" name="campus[0]" value="campus:Tromsø" />
+                <div data-drupal-selector="edit-actions" class="form-actions js-form-wrapper form-wrapper" id="edit-actions">
+                  <input data-drupal-selector="edit-submit-search-api-search-2" type="submit" id="edit-submit-search-api-search-2" value="Search"
+                    class="button js-form-submit form-submit" />
+                </div>
+
+
+              </form>
+
+            </div>
+            <div id="block-campusmenublock" class="block-samskipnaden-util block-campus-menu-block">
+
+
+
+              <ul data-block-id="block-campusmenublock" class="menu menu-level--0">
+                <li>
+                  <a href="/tromso/bolig" class="icon-nav-before bolig" target="" data-drupal-link-system-path="node/13">Bolig</a>
+                  <span class="nav-list-arrow"></span>
+                  <ul class="menu menu-level--1">
+                    <li>
+                      <a href="/node/12" target="" data-drupal-link-system-path="node/12">Søk bolig</a>
+                    </li>
+                    <li>
+                      <a href="https://studentbolig.samskipnaden.no/login" target="">Min side</a>
+                    </li>
+                    <li>
+                      <a href="/tromso/bolig/praktisk-info" target="" data-drupal-link-system-path="node/161">Praktisk info</a>
+                      <span class="nav-list-arrow"></span>
+                      <ul class="menu menu-level--2">
+                        <li>
+                          <a href="/tromso/bolig/praktisk-info/trivselsregler" target="" data-drupal-link-system-path="node/170">Trivselsregler</a>
+                        </li>
+                        <li>
+                          <a href="/tromso/bolig/praktisk-info/fasiliteter" target="" data-drupal-link-system-path="node/621">Fasiliteter</a>
+                        </li>
+                        <li>
+                          <a href="/tromso/bolig/praktisk-info/akuttsituasjoner" data-drupal-link-system-path="node/168">Akuttsituasjoner</a>
+                        </li>
+                        <li>
+                          <a href="/tromso/bolig/praktisk-info/om-leieavtalen" data-drupal-link-system-path="node/172">Om leieavtalen</a>
+                        </li>
+                        <li>
+                          <a href="/tromso/bolig/praktisk-info/inn-og-utflytting" target="" data-drupal-link-system-path="node/171">Inn- og utflytting</a>
+                        </li>
+                        <li>
+                          <a href="http://samskipnaden.no/tromso/bolig/trivselsverter" target="">Trivselsverter</a>
+                        </li>
+                      </ul>
+
+                    </li>
+                    <li>
+                      <a href="/tromso/bolig/kontakt" target="" data-drupal-link-system-path="node/169">Kontakt</a>
+                    </li>
+                    <li>
+                      <a href="/tromso/bolig/reservering-av-vaskeri" data-drupal-link-system-path="node/1130">Reservering av vaskeri</a>
+                    </li>
+                    <li>
+                      <a href="/tromso/bolig/trivselsverter-0" data-drupal-link-system-path="node/1181">Hva er en trivselsvert?</a>
+                      <span class="nav-list-arrow"></span>
+                      <ul class="menu menu-level--2">
+                        <li>
+                          <a href="/tromso/bolig/hva-er-en-trivselsvert/trivselsverter" target="" data-drupal-link-system-path="node/1348">Trivselsverter</a>
+                        </li>
+                        <li>
+                          <a href="/tromso/bolig/trivselsverter/praktisk-info-trivselsverter" data-drupal-link-system-path="node/1769">Praktisk info for trivselsverter</a>
+                        </li>
+                      </ul>
+
+                    </li>
+                  </ul>
+
+                </li>
+                <li>
+                  <a href="http://kraftsportssenter.no/" class="icon-nav-before trening" target="">Trening</a>
+                </li>
+                <li>
+                  <a href="/tromso/barnehage" class="icon-nav-before barnehage" target="" data-drupal-link-system-path="node/15">Barnehage</a>
+                  <span class="nav-list-arrow"></span>
+                  <ul class="menu menu-level--1">
+                    <li>
+                      <a href="/tromso/barnehage/finn" target="" data-drupal-link-system-path="tromso/barnehage/finn">Våre barnehager</a>
+                      <span class="nav-list-arrow"></span>
+                      <ul class="menu menu-level--2">
+                        <li>
+                          <a href="/tromso/barnehage/vare-barnehager/breivika-studentbarnehage" data-drupal-link-system-path="node/51">Breivika studentbarnehage</a>
+                        </li>
+                        <li>
+                          <a href="/tromso/barnehage/vare-barnehager/gimle-studentbarnehage" data-drupal-link-system-path="node/56">Gimle studentbarnehage</a>
+                        </li>
+                        <li>
+                          <a href="/tromso/barnehage/vare-barnehager/prestvannet-studentbarnehage" data-drupal-link-system-path="node/40">Prestvannet studentbarnehage</a>
+                        </li>
+                        <li>
+                          <a href="/tromso/barnehage/vare-barnehager/storskogasen-studentbarnehage" data-drupal-link-system-path="node/76">Storskogåsen studentbarnehage</a>
+                        </li>
+                        <li>
+                          <a href="/tromso/barnehage/vare-barnehager/universet-studentbarnehage" data-drupal-link-system-path="node/65">Universet studentbarnehage</a>
+                        </li>
+                      </ul>
+
+                    </li>
+                    <li>
+                      <a href="/tromso/barnehage/hvorfor-velge-studentbarnehage" data-drupal-link-system-path="node/151">Hvorfor velge studentbarnehage</a>
+                    </li>
+                    <li>
+                      <a href="/tromso/barnehage/kontakt" data-drupal-link-system-path="node/141">Kontakt</a>
+                    </li>
+                    <li>
+                      <a href="/tromso/barnehage/om-studentbarnehagene" target="" data-drupal-link-system-path="node/142">Om studentbarnehagene</a>
+                      <span class="nav-list-arrow"></span>
+                      <ul class="menu menu-level--2">
+                        <li>
+                          <a href="/tromso/barnehage/om-studentbarnehagene/mat-i-barnehagen" data-drupal-link-system-path="node/144">Mat i barnehagen</a>
+                        </li>
+                        <li>
+                          <a href="/tromso/barnehage/om-studentbarnehagene/reduksjon-i-foreldrebetaling" data-drupal-link-system-path="node/145">Reduksjon i foreldrebetaling</a>
+                        </li>
+                      </ul>
+
+                    </li>
+                    <li>
+                      <a href="/tromso/barnehage/priser" data-drupal-link-system-path="node/150">Priser</a>
+                    </li>
+                    <li>
+                      <a href="/tromso/barnehage/sok-barnehageplass" target="" data-drupal-link-system-path="node/123">Søk barnehageplass</a>
+                    </li>
+                  </ul>
+
+                </li>
+                <li class="menu-item--active-trail">
+                  <a href="/tromso/mat-drikke" class="icon-nav-before matogdrikke" target="" data-drupal-link-system-path="node/16">Mat &amp; drikke</a>
+                  <span class="nav-list-arrow open"></span>
+                  <ul class="menu menu-level--1">
+                    <li>
+                      <a href="https://samskipnaden.no/dagens-meny/day/1" target="">Ukesmeny</a>
+                    </li>
+                    <li>
+                      <a href="/tromso/mat-drikke/finn" target="" data-drupal-link-system-path="tromso/mat-drikke/finn">Våre kafeer og kaffebarer</a>
+                      <span class="nav-list-arrow"></span>
+                      <ul class="menu menu-level--2">
+                        <li>
+                          <a href="/tromso/mat-drikke/vare-kafeer-og-kaffebarer/bazinga" target="" data-drupal-link-system-path="node/46">BAZINGA</a>
+                        </li>
+                        <li>
+                          <a href="/tromso/mat-drikke/vare-kafeer-og-kaffebarer/farmasikafeen" target="" data-drupal-link-system-path="node/301">Farmasikafeen</a>
+                        </li>
+                        <li>
+                          <a href="/tromso/mat-drikke/vare-kafeer-og-kaffebarer/nfh-kafeen" target="" data-drupal-link-system-path="node/300">NFH-kafeen</a>
+                        </li>
+                        <li>
+                          <a href="/tromso/mat-drikke/vare-kafeer-og-kaffebarer/ilp-kafeen" data-drupal-link-system-path="node/303">ILP-kafeen</a>
+                        </li>
+                        <li>
+                          <a href="/tromso/mat-drikke/vare-kafeer-og-kaffebarer/ig-kafeen" data-drupal-link-system-path="node/299">IG-kafeen</a>
+                        </li>
+                        <li>
+                          <a href="/tromso/mat-drikke/vare-kafeer-og-kaffebarer/markedet" data-drupal-link-system-path="node/379">Markedet</a>
+                        </li>
+                        <li>
+                          <a href="/tromso/mat-drikke/vare-kafeer-og-kaffebarer/mat" data-drupal-link-system-path="node/290">MAT.</a>
+                        </li>
+                        <li>
+                          <a href="/tromso/mat-drikke/vare-kafeer-og-kaffebarer/mh-kafeen" data-drupal-link-system-path="node/295">MH-kafeen</a>
+                        </li>
+                        <li>
+                          <a href="/tromso/mat-drikke/vare-kafeer-og-kaffebarer/mix-kiosken" data-drupal-link-system-path="node/287">MIX-kiosken</a>
+                        </li>
+                        <li>
+                          <a href="/tromso/mat-drikke/vare-kafeer-og-kaffebarer/musikkafeen" data-drupal-link-system-path="node/304">Musikkafeen</a>
+                        </li>
+                        <li>
+                          <a href="/tromso/mat-drikke/vare-kafeer-og-kaffebarer/sjampanjekafeen" data-drupal-link-system-path="node/485">Sjampanjekafeen</a>
+                        </li>
+                        <li>
+                          <a href="/tromso/mat-drikke/vare-kafeer-og-kaffebarer/tannkafeen" data-drupal-link-system-path="node/302">Tannkafeen</a>
+                        </li>
+                        <li>
+                          <a href="/tromso/mat-drikke/vare-kafeer-og-kaffebarer/teorifagskafeen" target="" title="Vi stenger klokken 1500 fredag 02.12 grunnet arrangement"
+                            data-drupal-link-system-path="node/285">Teorifagskafeen</a>
+                        </li>
+                        <li>
+                          <a href="/tromso/mat-drikke/vare-kafeer-og-kaffebarer/isv-kafeen" data-drupal-link-system-path="node/297">ISV-kafeen</a>
+                        </li>
+                        <li>
+                          <a href="/tromso/mat-drikke/vare-kafeer-og-kaffebarer/kaffebaren-c8h10n4o2" data-drupal-link-system-path="node/293">Kaffebaren C8H10N4O2</a>
+                        </li>
+                        <li>
+                          <a href="/tromso/mat-drikke/vare-kafeer-og-kaffebarer/kantiner-vgs" data-drupal-link-system-path="node/1010">Kantiner VGS</a>
+                        </li>
+                      </ul>
+
+                    </li>
+                    <li>
+                      <a href="/tromso/mat-drikke/kontakt" target="" data-drupal-link-system-path="node/221">Kontakt</a>
+                    </li>
+                    <li>
+                      <a href="/tromso/mat-drikke/om-oss" data-drupal-link-system-path="node/220">Om oss</a>
+                    </li>
+                    <li>
+                      <a href="/tromso/mat-drikke/middagskort" data-drupal-link-system-path="node/566">Middagskort</a>
+                    </li>
+                    <li>
+                      <a href="/tromso/oppskrifter" data-drupal-link-system-path="node/568">Oppskrifter</a>
+                      <span class="nav-list-arrow"></span>
+                      <ul class="menu menu-level--2">
+                        <li>
+                          <a href="/tromso/sverres-thaisuppe" data-drupal-link-system-path="node/569">Sverres Thaisuppe</a>
+                        </li>
+                      </ul>
+
+                    </li>
+                    <li>
+                      <a href="http://catering.sito.no/" target="">Catering </a>
+                    </li>
+                    <li>
+                      <a href="/tromso/mat-drikke/studentmatkonferansen-2018" data-drupal-link-system-path="node/3002">Studentmatkonferansen 2018</a>
+                    </li>
+                  </ul>
+
+                </li>
+                <li>
+                  <a href="/tromso/helse" class="icon-nav-before radgivning" target="" data-drupal-link-system-path="node/17">Helse</a>
+                  <span class="nav-list-arrow"></span>
+                  <ul class="menu menu-level--1">
+                    <li>
+                      <a href="/tromso/helse/grupper-og-kurs" target="" data-drupal-link-system-path="node/271">Grupper og kurs</a>
+                      <span class="nav-list-arrow"></span>
+                      <ul class="menu menu-level--2">
+                        <li>
+                          <a href="/contact/pamelding_til_grupper_og_kurs_ho" target="" data-drupal-link-system-path="webform/helse_tromo">Påmelding</a>
+                        </li>
+                      </ul>
+
+                    </li>
+                    <li>
+                      <a href="/node/565" target="" data-drupal-link-system-path="node/565">Studentrådgivinga</a>
+                      <span class="nav-list-arrow"></span>
+                      <ul class="menu menu-level--2">
+                        <li>
+                          <a href="/tromso/helse/studentradgivinga/fa-hjelp" target="" data-drupal-link-system-path="node/251">Få hjelp</a>
+                        </li>
+                        <li>
+                          <a href="/tromso/helse/studentradgivinga/dine-rettigheter" target="" data-drupal-link-system-path="node/257">Dine rettigheter</a>
+                        </li>
+                        <li>
+                          <a href="/tromso/helse/studentradgivinga/personlige-problemer" target="" data-drupal-link-system-path="node/254">Personlige problemer</a>
+                        </li>
+                        <li>
+                          <a href="/tromso/helse/studentradgivinga/studentlivet" target="" data-drupal-link-system-path="node/252">Studentlivet</a>
+                        </li>
+                      </ul>
+
+                    </li>
+                    <li>
+                      <a href="/tromso/helse/lege-og-tannlege" data-drupal-link-system-path="node/270">Lege og tannlege</a>
+                    </li>
+                    <li>
+                      <a href="/tromso/helse/studier-med-stotte-sms" target="" data-drupal-link-system-path="node/269">Studier med støtte (SMS)</a>
+                    </li>
+                    <li>
+                      <a href="/node/564" target="" data-drupal-link-system-path="node/564">Studenthelsestasjon</a>
+                    </li>
+                    <li>
+                      <a href="/tromso/helse/kontakt" data-drupal-link-system-path="node/2738">Bestill time/kontakt</a>
+                    </li>
+                  </ul>
+
+                </li>
+                <li>
+                  <a href="/tromso/studentliv" class="icon-nav-before fritid" target="" data-drupal-link-system-path="node/19">Studentliv</a>
+                </li>
+              </ul>
+
+
+
+            </div>
+            <nav role="navigation" aria-labelledby="block-headershortcutmenu-menu" id="block-headershortcutmenu" class="block block-menu navigation menu--header-shortcut-menu">
+
+              <h2 class="visually-hidden" id="block-headershortcutmenu-menu">Header shortcut menu</h2>
+
+
+
+              <ul data-block-id="block-headershortcutmenu" class="menu">
+                <li class="menu-item is-open">
+                  <a href="/kontakt" class="contact-link" target="" data-drupal-link-system-path="node/644">Kontakt</a>
+                </li>
+              </ul>
+
+
+
+            </nav>
+
+          </div>
+
+        </hgroup>
+        <div class="mobile-bg"></div>
+      </header>
+      <!-- /#header -->
+
+
+      <div>
+        <div id="block-samskipnaden-breadcrumbs" class="block-system block-system-breadcrumb-block">
+
+
+          <nav class="breadcrumb" role="navigation" aria-labelledby="system-breadcrumb">
+            <h2 id="system-breadcrumb" class="visually-hidden">Navigasjonssti</h2>
+            <ol>
+              <li>
+                <a href="/tromso/mat-drikke">Mat &amp; drikke</a>
+              </li>
+              <li>
+                <a href="/dagens-meny/day/1">Dagens retter</a>
+              </li>
+            </ol>
+          </nav>
+
+        </div>
+
+      </div>
+
+
+      <!-- ______________________ MAIN _______________________ -->
+
+      <div id="main">
+        <div class="container">
+          <section id="content">
+
+            <div id="content-header">
+
+              <div id="highlighted">
+                <div>
+
+
+                </div>
+              </div>
+
+
+
+
+
+
+
+
+
+            </div>
+            <!-- /#content-header -->
+
+            <div id="content-area">
+              <div>
+                <div id="block-samskipnaden-content" class="block-system block-system-main-block">
+
+
+                  <div class="views-element-container">
+                    <div class="views-view--dish-of-the-day-calendar--page-day view-content js-view-dom-id-101d514d92af83b84b77a6da038b141f29195e4d1fb03ff08dd672a123ba471e">
+                      <h2 class="page-title">Dagens retter</h2>
+
+
+
+
+                      <div class="views-element-container">
+                        <div class="views-view--food-icons-legend--block-1 view-content js-view-dom-id-c1067c0ad4bf5c8d0704fd099e2d81b163a6e0a63d89dd796221a75fa837a264">
+
+
+
+
+
+
+
+
+                          <div class="views-row">
+                            <div class="views-field views-field-rendered-entity">
+                              <span class="field-content">
+                                <div class="taxonomy-term taxonomy-term--type-food-icons taxonomy-term--view-mode-default ds-1col clearfix">
+
+
+
+
+                                  <img src="https://samskipnaden.no/sites/default/files/2017-10/vegetar.svg" alt="Vegetarisk" title="Vegetarisk" />
+
+
+                                </div>
+
+                              </span>
+                            </div>
+                            <div class="views-field views-field-name">
+                              <span class="field-content">Vegetarisk</span>
+                            </div>
+                          </div>
+                          <div class="views-row">
+                            <div class="views-field views-field-rendered-entity">
+                              <span class="field-content">
+                                <div class="taxonomy-term taxonomy-term--type-food-icons taxonomy-term--view-mode-default ds-1col clearfix">
+
+
+
+
+                                  <img src="https://samskipnaden.no/sites/default/files/2017-10/vegan.svg" alt="Vegansk" title="Vegansk" />
+
+
+                                </div>
+
+                              </span>
+                            </div>
+                            <div class="views-field views-field-name">
+                              <span class="field-content">Vegansk</span>
+                            </div>
+                          </div>
+                          <div class="views-row">
+                            <div class="views-field views-field-rendered-entity">
+                              <span class="field-content">
+                                <div class="taxonomy-term taxonomy-term--type-food-icons taxonomy-term--view-mode-default ds-1col clearfix">
+
+
+
+
+                                  <img src="https://samskipnaden.no/sites/default/files/2017-10/ikke-svin.svg" alt="Uten svin" title="Uten svin" />
+
+
+                                </div>
+
+                              </span>
+                            </div>
+                            <div class="views-field views-field-name">
+                              <span class="field-content">Uten svin</span>
+                            </div>
+                          </div>
+
+
+
+
+
+
+
+
+
+                        </div>
+                      </div>
+
+
+                      <header>
+                        <h3>Fredag, April 20, 2018</h3>
+
+                        <nav class="pager" role="navigation" aria-labelledby="pagination-heading">
+                          <h4 class="visually-hidden">Sider</h4>
+                          <ul class="js-pager__items">
+                            <li class="pager__item pager__item--previous">
+                              <a href="/dagens-meny/day/1/20180419" title="Gå til forrige side" rel="prev">
+                                <span aria-hidden="true">‹‹</span>
+                                <span>Tilbake</span>
+                              </a>
+                            </li>
+                            <li class="pager__item pager__item--next">
+                              <a href="/dagens-meny/day/1/20180423" title="Gå til neste side" rel="next">
+                                <span>Neste</span>
+                                <span aria-hidden="true">››</span>
+                              </a>
+                            </li>
+                          </ul>
+                        </nav>
+
+
+                      </header>
+
+
+
+                      <div class="view-content-rows">
+                        <div class="view-grouping-title">MH-kafeen</div>
+                        <div class="item-list">
+                          <h3>Lunsj</h3>
+
+                          <ul>
+
+                            <li>
+                              <div class="views-field views-field-field-price">
+                                <div class="field-content">35,-</div>
+                              </div>
+                              <div class="views-field views-field-nothing">
+                                <span class="field-content">
+                                  <strong>Dagens suppe med focaccia
+                                  </strong>
+                                  <div class="taxonomy-term taxonomy-term--type-food-icons taxonomy-term--view-mode-default ds-1col clearfix">
+
+
+
+
+                                    <img src="https://samskipnaden.no/sites/default/files/2017-10/vegetar.svg" alt="Vegetarisk" title="Vegetarisk" />
+
+
+                                  </div>
+
+                                </span>
+                              </div>
+                              <div class="views-field views-field-field-description">
+                                <div class="field-content"></div>
+                              </div>
+                              <div class="views-field views-field-field-allergener">
+                                <span class="views-label views-label-field-allergener">Allergener: </span>
+                                <div class="field-content">selleri, melk, hvete (i brødet)</div>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="views-field views-field-field-price">
+                                <div class="field-content">41,-</div>
+                              </div>
+                              <div class="views-field views-field-nothing">
+                                <span class="field-content">
+                                  <strong>Risgrøt med saft
+                                  </strong>
+                                  <div class="taxonomy-term taxonomy-term--type-food-icons taxonomy-term--view-mode-default ds-1col clearfix">
+
+
+
+
+                                    <img src="https://samskipnaden.no/sites/default/files/2017-10/vegetar.svg" alt="Vegetarisk" title="Vegetarisk" />
+
+
+                                  </div>
+
+                                </span>
+                              </div>
+                              <div class="views-field views-field-field-description">
+                                <div class="field-content"></div>
+                              </div>
+                              <div class="views-field views-field-field-allergener">
+                                <span class="views-label views-label-field-allergener">Allergener: </span>
+                                <div class="field-content">melk</div>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="views-field views-field-field-price">
+                                <div class="field-content">55,-</div>
+                              </div>
+                              <div class="views-field views-field-nothing">
+                                <span class="field-content">
+                                  <strong>Rømmegrøt med saft
+                                  </strong>
+                                  <div class="taxonomy-term taxonomy-term--type-food-icons taxonomy-term--view-mode-default ds-1col clearfix">
+
+
+
+
+                                    <img src="https://samskipnaden.no/sites/default/files/2017-10/vegetar.svg" alt="Vegetarisk" title="Vegetarisk" />
+
+
+                                  </div>
+
+                                </span>
+                              </div>
+                              <div class="views-field views-field-field-description">
+                                <div class="field-content"></div>
+                              </div>
+                              <div class="views-field views-field-field-allergener">
+                                <span class="views-label views-label-field-allergener">Allergener: </span>
+                                <div class="field-content">melk, hvete</div>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="views-field views-field-field-price">
+                                <div class="field-content">52,-</div>
+                              </div>
+                              <div class="views-field views-field-nothing">
+                                <span class="field-content">
+                                  <strong>MHs go&#039; blanding
+                                  </strong>
+                                  <div class="taxonomy-term taxonomy-term--type-food-icons taxonomy-term--view-mode-default ds-1col clearfix">
+
+
+
+
+                                    <img src="https://samskipnaden.no/sites/default/files/2017-10/vegetar.svg" alt="Vegetarisk" title="Vegetarisk" />
+
+
+                                  </div>
+
+                                </span>
+                              </div>
+                              <div class="views-field views-field-field-description">
+                                <div class="field-content"></div>
+                              </div>
+                              <div class="views-field views-field-field-allergener">
+                                <span class="views-label views-label-field-allergener">Allergener: </span>
+                                <div class="field-content">melk, hvete</div>
+                              </div>
+                            </li>
+
+                          </ul>
+
+                        </div>
+                        <div class="item-list">
+                          <h3>Middag</h3>
+
+                          <ul>
+
+                            <li>
+                              <div class="views-field views-field-field-price">
+                                <div class="field-content">74,-</div>
+                              </div>
+                              <div class="views-field views-field-nothing">
+                                <span class="field-content">
+                                  <strong>Nachosform med stæsj
+                                  </strong>
+                                  <div class="taxonomy-term taxonomy-term--type-food-icons taxonomy-term--view-mode-default ds-1col clearfix">
+
+
+
+
+                                    <img src="https://samskipnaden.no/sites/default/files/2017-10/ikke-svin.svg" alt="Uten svin" title="Uten svin" />
+
+
+                                  </div>
+
+                                </span>
+                              </div>
+                              <div class="views-field views-field-field-description">
+                                <div class="field-content"></div>
+                              </div>
+                              <div class="views-field views-field-field-allergener">
+                                <span class="views-label views-label-field-allergener">Allergener: </span>
+                                <div class="field-content">selleri, melk, egg</div>
+                              </div>
+                            </li>
+
+                          </ul>
+
+                        </div>
+
+                        <div class="view-grouping-title">Teorifagskafeen</div>
+                        <div class="item-list">
+
+                          <ul>
+
+                            <li>
+                              <div class="views-field views-field-field-price">
+                                <div class="field-content">Kr. 43.-</div>
+                              </div>
+                              <div class="views-field views-field-nothing">
+                                <span class="field-content">
+                                  <strong>Dagens suppe
+                                  </strong>
+                                </span>
+                              </div>
+                              <div class="views-field views-field-field-description">
+                                <div class="field-content">Dagens hjemmelagede gluten og laktosefrie suppe</div>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="views-field views-field-field-price">
+                                <div class="field-content">Kr. 41.-</div>
+                              </div>
+                              <div class="views-field views-field-nothing">
+                                <span class="field-content">
+                                  <strong>Fredagsgrøt
+                                  </strong>
+                                  <div class="taxonomy-term taxonomy-term--type-food-icons taxonomy-term--view-mode-default ds-1col clearfix">
+
+
+
+
+                                    <img src="https://samskipnaden.no/sites/default/files/2017-10/vegetar.svg" alt="Vegetarisk" title="Vegetarisk" />
+
+
+                                  </div>
+
+                                </span>
+                              </div>
+                              <div class="views-field views-field-field-description">
+                                <div class="field-content">Risengrynsgrøt med sukker, kanel, smør og saft.</div>
+                              </div>
+                              <div class="views-field views-field-field-allergener">
+                                <span class="views-label views-label-field-allergener">Allergener: </span>
+                                <div class="field-content">melk</div>
+                              </div>
+                            </li>
+
+                          </ul>
+
+                        </div>
+                        <div class="item-list">
+                          <h3>Middag</h3>
+
+                          <ul>
+
+                            <li>
+                              <div class="views-field views-field-field-price">
+                                <div class="field-content"></div>
+                              </div>
+                              <div class="views-field views-field-nothing">
+                                <span class="field-content">
+                                  <strong>Garasjesalg
+                                  </strong>
+                                </span>
+                              </div>
+                              <div class="views-field views-field-field-description">
+                                <div class="field-content"></div>
+                              </div>
+                            </li>
+
+                          </ul>
+
+                        </div>
+
+
+                      </div>
+
+
+                      <div class="views-element-container">
+                        <div class="views-view--dish-of-the-day-calendar--attachment-1 view-content js-view-dom-id-7ea79b04e2c29e2dc6b9fc1457354eb70c04a3eac43357d9010c3e6f44bcc1ff">
+
+
+
+
+                          <header>
+                            <h3>Faste menyer</h3>
+
+                          </header>
+
+
+
+
+                          <div class="view-grouping-title">MAT.</div>
+                          <div class="item-list">
+
+                            <ul>
+
+                              <li>
+                                <div class="views-field views-field-field-price">
+                                  <div class="field-content">35,-</div>
+                                </div>
+                                <div class="views-field views-field-nothing">
+                                  <span class="field-content">
+                                    <strong>Suppe
+                                    </strong>
+                                  </span>
+                                </div>
+                                <div class="views-field views-field-field-description">
+                                  <div class="field-content">Forskjellige supper serveres daglig fra klokken 11.00. Spør betjeningen om allergener.</div>
+                                </div>
+                              </li>
+                              <li>
+                                <div class="views-field views-field-field-price">
+                                  <div class="field-content">115,-</div>
+                                </div>
+                                <div class="views-field views-field-nothing">
+                                  <span class="field-content">
+                                    <strong>Skogsgryte
+                                    </strong>
+                                    <div class="taxonomy-term taxonomy-term--type-food-icons taxonomy-term--view-mode-default ds-1col clearfix">
+
+
+
+
+                                      <img src="https://samskipnaden.no/sites/default/files/2017-10/ikke-svin.svg" alt="Uten svin" title="Uten svin" />
+
+
+                                    </div>
+
+                                  </span>
+                                </div>
+                                <div class="views-field views-field-field-description">
+                                  <div class="field-content">Oksekjøtt og sopp i kremet gryte (laktosefri). Serveres med rørte tyttebær og ris</div>
+                                </div>
+                                <div class="views-field views-field-field-allergener">
+                                  <span class="views-label views-label-field-allergener">Allergener: </span>
+                                  <div class="field-content">melk</div>
+                                </div>
+                              </li>
+                              <li>
+                                <div class="views-field views-field-field-price">
+                                  <div class="field-content">115,-</div>
+                                </div>
+                                <div class="views-field views-field-nothing">
+                                  <span class="field-content">
+                                    <strong>Kylling i ratatouille
+                                    </strong>
+                                    <div class="taxonomy-term taxonomy-term--type-food-icons taxonomy-term--view-mode-default ds-1col clearfix">
+
+
+
+
+                                      <img src="https://samskipnaden.no/sites/default/files/2017-10/ikke-svin.svg" alt="Uten svin" title="Uten svin" />
+
+
+                                    </div>
+
+                                  </span>
+                                </div>
+                                <div class="views-field views-field-field-description">
+                                  <div class="field-content">Franskinspirert grønnsaksgryte med kylling. Serveres med ris</div>
+                                </div>
+                              </li>
+                              <li>
+                                <div class="views-field views-field-field-price">
+                                  <div class="field-content">110,-</div>
+                                </div>
+                                <div class="views-field views-field-nothing">
+                                  <span class="field-content">
+                                    <strong>Revet laks i tortilla
+                                    </strong>
+                                    <div class="taxonomy-term taxonomy-term--type-food-icons taxonomy-term--view-mode-default ds-1col clearfix">
+
+
+
+
+                                      <img src="https://samskipnaden.no/sites/default/files/2017-10/ikke-svin.svg" alt="Uten svin" title="Uten svin" />
+
+
+                                    </div>
+
+                                  </span>
+                                </div>
+                                <div class="views-field views-field-field-description">
+                                  <div class="field-content">Serveres med sitronchutney, yoghurt naturell (laktosefri) og salat.</div>
+                                </div>
+                                <div class="views-field views-field-field-allergener">
+                                  <span class="views-label views-label-field-allergener">Allergener: </span>
+                                  <div class="field-content">soya, melk, hvete, fisk</div>
+                                </div>
+                              </li>
+                              <li>
+                                <div class="views-field views-field-field-price">
+                                  <div class="field-content">85,-</div>
+                                </div>
+                                <div class="views-field views-field-nothing">
+                                  <span class="field-content">
+                                    <strong>Chili sin carne
+                                    </strong>
+                                    <div class="taxonomy-term taxonomy-term--type-food-icons taxonomy-term--view-mode-default ds-1col clearfix">
+
+
+
+
+                                      <img src="https://samskipnaden.no/sites/default/files/2017-10/vegan.svg" alt="Vegansk" title="Vegansk" />
+
+
+                                    </div>
+
+                                  </span>
+                                </div>
+                                <div class="views-field views-field-field-description">
+                                  <div class="field-content">Texmex-gryte med bønner og kikerter. Serveres med tortillachips</div>
+                                </div>
+                              </li>
+                              <li>
+                                <div class="views-field views-field-field-price">
+                                  <div class="field-content">115,-</div>
+                                </div>
+                                <div class="views-field views-field-nothing">
+                                  <span class="field-content">
+                                    <strong>Kyllingpizza
+                                    </strong>
+                                    <div class="taxonomy-term taxonomy-term--type-food-icons taxonomy-term--view-mode-default ds-1col clearfix">
+
+
+
+
+                                      <img src="https://samskipnaden.no/sites/default/files/2017-10/ikke-svin.svg" alt="Uten svin" title="Uten svin" />
+
+
+                                    </div>
+
+                                  </span>
+                                </div>
+                                <div class="views-field views-field-field-description">
+                                  <div class="field-content">Kylling marinert med soltørkede tomater, purreløk, paprika, ost og rømmedressing.</div>
+                                </div>
+                                <div class="views-field views-field-field-allergener">
+                                  <span class="views-label views-label-field-allergener">Allergener: </span>
+                                  <div class="field-content">sennep, melk, hvete, egg</div>
+                                </div>
+                              </li>
+                              <li>
+                                <div class="views-field views-field-field-price">
+                                  <div class="field-content">115,-</div>
+                                </div>
+                                <div class="views-field views-field-nothing">
+                                  <span class="field-content">
+                                    <strong>Pepperonipizza
+                                    </strong>
+                                  </span>
+                                </div>
+                                <div class="views-field views-field-field-description">
+                                  <div class="field-content">Pepperoni, rødløk, ost, paprika og rømmedressing</div>
+                                </div>
+                                <div class="views-field views-field-field-allergener">
+                                  <span class="views-label views-label-field-allergener">Allergener: </span>
+                                  <div class="field-content">sennep, melk, hvete, egg</div>
+                                </div>
+                              </li>
+                              <li>
+                                <div class="views-field views-field-field-price">
+                                  <div class="field-content">115,-</div>
+                                </div>
+                                <div class="views-field views-field-nothing">
+                                  <span class="field-content">
+                                    <strong>Kjøttbolle- og baconpizza
+                                    </strong>
+                                  </span>
+                                </div>
+                                <div class="views-field views-field-field-description">
+                                  <div class="field-content">Kjøttboller, bacon, purreløk, oliven, ost og rømmedressing.</div>
+                                </div>
+                                <div class="views-field views-field-field-allergener">
+                                  <span class="views-label views-label-field-allergener">Allergener: </span>
+                                  <div class="field-content">sennep, melk, hvete, egg</div>
+                                </div>
+                              </li>
+                              <li>
+                                <div class="views-field views-field-field-price">
+                                  <div class="field-content">115</div>
+                                </div>
+                                <div class="views-field views-field-nothing">
+                                  <span class="field-content">
+                                    <strong>Biffpizza
+                                    </strong>
+                                    <div class="taxonomy-term taxonomy-term--type-food-icons taxonomy-term--view-mode-default ds-1col clearfix">
+
+
+
+
+                                      <img src="https://samskipnaden.no/sites/default/files/2017-10/ikke-svin.svg" alt="Uten svin" title="Uten svin" />
+
+
+                                    </div>
+
+                                  </span>
+                                </div>
+                                <div class="views-field views-field-field-description">
+                                  <div class="field-content">Marinert biffkjøtt, mais, rødløk, banan, jalaneños, ost og rømmedressing</div>
+                                </div>
+                                <div class="views-field views-field-field-allergener">
+                                  <span class="views-label views-label-field-allergener">Allergener: </span>
+                                  <div class="field-content">sennep, melk, hvete, egg</div>
+                                </div>
+                              </li>
+                              <li>
+                                <div class="views-field views-field-field-price">
+                                  <div class="field-content">100,-</div>
+                                </div>
+                                <div class="views-field views-field-nothing">
+                                  <span class="field-content">
+                                    <strong>Grønnsakspizza
+                                    </strong>
+                                    <div class="taxonomy-term taxonomy-term--type-food-icons taxonomy-term--view-mode-default ds-1col clearfix">
+
+
+
+
+                                      <img src="https://samskipnaden.no/sites/default/files/2017-10/vegetar.svg" alt="Vegetarisk" title="Vegetarisk" />
+
+
+                                    </div>
+
+                                  </span>
+                                </div>
+                                <div class="views-field views-field-field-description">
+                                  <div class="field-content">Ost, assorterte grønnsaker og rømmedressing. </div>
+                                </div>
+                                <div class="views-field views-field-field-allergener">
+                                  <span class="views-label views-label-field-allergener">Allergener: </span>
+                                  <div class="field-content">sennep, melk, hvete, egg</div>
+                                </div>
+                              </li>
+                              <li>
+                                <div class="views-field views-field-field-price">
+                                  <div class="field-content">85,-</div>
+                                </div>
+                                <div class="views-field views-field-nothing">
+                                  <span class="field-content">
+                                    <strong>Pizza Margherita
+                                    </strong>
+                                    <div class="taxonomy-term taxonomy-term--type-food-icons taxonomy-term--view-mode-default ds-1col clearfix">
+
+
+
+
+                                      <img src="https://samskipnaden.no/sites/default/files/2017-10/vegetar.svg" alt="Vegetarisk" title="Vegetarisk" />
+
+
+                                    </div>
+
+                                  </span>
+                                </div>
+                                <div class="views-field views-field-field-description">
+                                  <div class="field-content">Ost og olivenolje</div>
+                                </div>
+                                <div class="views-field views-field-field-allergener">
+                                  <span class="views-label views-label-field-allergener">Allergener: </span>
+                                  <div class="field-content">melk, hvete</div>
+                                </div>
+                              </li>
+
+                            </ul>
+
+                          </div>
+
+                          <div class="view-grouping-title">BAZINGA</div>
+                          <div class="item-list">
+
+                            <ul>
+
+                              <li>
+                                <div class="views-field views-field-field-price">
+                                  <div class="field-content">99,-</div>
+                                </div>
+                                <div class="views-field views-field-nothing">
+                                  <span class="field-content">
+                                    <strong>Studentburger
+                                    </strong>
+                                    <div class="taxonomy-term taxonomy-term--type-food-icons taxonomy-term--view-mode-default ds-1col clearfix">
+
+
+
+
+                                      <img src="https://samskipnaden.no/sites/default/files/2017-10/ikke-svin.svg" alt="Uten svin" title="Uten svin" />
+
+
+                                    </div>
+
+                                  </span>
+                                </div>
+                                <div class="views-field views-field-field-description">
+                                  <div class="field-content">Hjemmelaget burger av okse og lam, med salat, tomat, løk, ost og dressing.</div>
+                                </div>
+                                <div class="views-field views-field-field-allergener">
+                                  <span class="views-label views-label-field-allergener">Allergener: </span>
+                                  <div class="field-content">melk, hvete (i brødet), egg</div>
+                                </div>
+                              </li>
+                              <li>
+                                <div class="views-field views-field-field-price">
+                                  <div class="field-content">105,-</div>
+                                </div>
+                                <div class="views-field views-field-nothing">
+                                  <span class="field-content">
+                                    <strong>Bazingaburger
+                                    </strong>
+                                  </span>
+                                </div>
+                                <div class="views-field views-field-field-description">
+                                  <div class="field-content">Hjemmelaget burger av okse og lam, med ost og bacon.</div>
+                                </div>
+                                <div class="views-field views-field-field-allergener">
+                                  <span class="views-label views-label-field-allergener">Allergener: </span>
+                                  <div class="field-content">melk, hvete (i brødet), egg</div>
+                                </div>
+                              </li>
+                              <li>
+                                <div class="views-field views-field-field-price">
+                                  <div class="field-content">105,-</div>
+                                </div>
+                                <div class="views-field views-field-nothing">
+                                  <span class="field-content">
+                                    <strong>Onion Overlord
+                                    </strong>
+                                    <div class="taxonomy-term taxonomy-term--type-food-icons taxonomy-term--view-mode-default ds-1col clearfix">
+
+
+
+
+                                      <img src="https://samskipnaden.no/sites/default/files/2017-10/ikke-svin.svg" alt="Uten svin" title="Uten svin" />
+
+
+                                    </div>
+
+                                  </span>
+                                </div>
+                                <div class="views-field views-field-field-description">
+                                  <div class="field-content">Hjemmelaget burger av okse og lam, med løkringer, sprøstekt løk og hickory BBQ-saus.</div>
+                                </div>
+                                <div class="views-field views-field-field-allergener">
+                                  <span class="views-label views-label-field-allergener">Allergener: </span>
+                                  <div class="field-content">hvete (i brødet), egg</div>
+                                </div>
+                              </li>
+                              <li>
+                                <div class="views-field views-field-field-price">
+                                  <div class="field-content">105,-</div>
+                                </div>
+                                <div class="views-field views-field-nothing">
+                                  <span class="field-content">
+                                    <strong>Cheese Mexican
+                                    </strong>
+                                    <div class="taxonomy-term taxonomy-term--type-food-icons taxonomy-term--view-mode-default ds-1col clearfix">
+
+
+
+
+                                      <img src="https://samskipnaden.no/sites/default/files/2017-10/ikke-svin.svg" alt="Uten svin" title="Uten svin" />
+
+
+                                    </div>
+
+                                  </span>
+                                </div>
+                                <div class="views-field views-field-field-description">
+                                  <div class="field-content">Hjemmelaget burger av okse og lam, med chilisaus, cheddar og marinerte jalapeños. </div>
+                                </div>
+                                <div class="views-field views-field-field-allergener">
+                                  <span class="views-label views-label-field-allergener">Allergener: </span>
+                                  <div class="field-content">melk, hvete (i brødet), egg</div>
+                                </div>
+                              </li>
+                              <li>
+                                <div class="views-field views-field-field-price">
+                                  <div class="field-content">105,-</div>
+                                </div>
+                                <div class="views-field views-field-nothing">
+                                  <span class="field-content">
+                                    <strong>Vegansk falafelburger
+                                    </strong>
+                                    <div class="taxonomy-term taxonomy-term--type-food-icons taxonomy-term--view-mode-default ds-1col clearfix">
+
+
+
+
+                                      <img src="https://samskipnaden.no/sites/default/files/2017-10/vegan.svg" alt="Vegansk" title="Vegansk" />
+
+
+                                    </div>
+
+                                  </span>
+                                </div>
+                                <div class="views-field views-field-field-description">
+                                  <div class="field-content">100% vegansk burger</div>
+                                </div>
+                                <div class="views-field views-field-field-allergener">
+                                  <span class="views-label views-label-field-allergener">Allergener: </span>
+                                  <div class="field-content">soya, hvete (i brødet)</div>
+                                </div>
+                              </li>
+                              <li>
+                                <div class="views-field views-field-field-price">
+                                  <div class="field-content">105,-</div>
+                                </div>
+                                <div class="views-field views-field-nothing">
+                                  <span class="field-content">
+                                    <strong>Blue Belgium Burger
+                                    </strong>
+                                  </span>
+                                </div>
+                                <div class="views-field views-field-field-description">
+                                  <div class="field-content">Hjemmelaget burger av okse og lam, med bacon, blåmuggost og BBQ-dressing.</div>
+                                </div>
+                                <div class="views-field views-field-field-allergener">
+                                  <span class="views-label views-label-field-allergener">Allergener: </span>
+                                  <div class="field-content">melk, hvete (i brødet), egg</div>
+                                </div>
+                              </li>
+                              <li>
+                                <div class="views-field views-field-field-price">
+                                  <div class="field-content">105,-</div>
+                                </div>
+                                <div class="views-field views-field-nothing">
+                                  <span class="field-content">
+                                    <strong>Bloody Brie Burger
+                                    </strong>
+                                    <div class="taxonomy-term taxonomy-term--type-food-icons taxonomy-term--view-mode-default ds-1col clearfix">
+
+
+
+
+                                      <img src="https://samskipnaden.no/sites/default/files/2017-10/ikke-svin.svg" alt="Uten svin" title="Uten svin" />
+
+
+                                    </div>
+
+                                  </span>
+                                </div>
+                                <div class="views-field views-field-field-description">
+                                  <div class="field-content">Hjemmelaget burger av okse og lam, med brie og tyttebær.</div>
+                                </div>
+                                <div class="views-field views-field-field-allergener">
+                                  <span class="views-label views-label-field-allergener">Allergener: </span>
+                                  <div class="field-content">melk, hvete (i brødet), egg</div>
+                                </div>
+                              </li>
+                              <li>
+                                <div class="views-field views-field-field-price">
+                                  <div class="field-content">30/50/65</div>
+                                </div>
+                                <div class="views-field views-field-nothing">
+                                  <span class="field-content">
+                                    <strong>Potetbåter tiny/medi/giga
+                                    </strong>
+                                    <div class="taxonomy-term taxonomy-term--type-food-icons taxonomy-term--view-mode-default ds-1col clearfix">
+
+
+
+
+                                      <img src="https://samskipnaden.no/sites/default/files/2017-10/vegan.svg" alt="Vegansk" title="Vegansk" />
+
+
+                                    </div>
+
+                                  </span>
+                                </div>
+                                <div class="views-field views-field-field-description">
+                                  <div class="field-content">Passer til én/to/tre personer som tilbehør til en hovedrett</div>
+                                </div>
+                              </li>
+                              <li>
+                                <div class="views-field views-field-field-price">
+                                  <div class="field-content">30/50/65</div>
+                                </div>
+                                <div class="views-field views-field-nothing">
+                                  <span class="field-content">
+                                    <strong>Søtpotetfries tiny/medi/giga
+                                    </strong>
+                                    <div class="taxonomy-term taxonomy-term--type-food-icons taxonomy-term--view-mode-default ds-1col clearfix">
+                                      <img src="https://samskipnaden.no/sites/default/files/2017-10/vegan.svg" alt="Vegansk" title="Vegansk" />
+                                    </div>
+                                  </span>
+                                </div>
+                                <div class="views-field views-field-field-description">
+                                  <div class="field-content">Passer til én/to/tre personer som tilbehør til en hovedrett</div>
+                                </div>
+                              </li>
+                              <li>
+                                <div class="views-field views-field-field-price">
+                                  <div class="field-content">65,-</div>
+                                </div>
+                                <div class="views-field views-field-nothing">
+                                  <span class="field-content">
+                                    <strong>Chili Fries
+                                    </strong>
+                                    <div class="taxonomy-term taxonomy-term--type-food-icons taxonomy-term--view-mode-default ds-1col clearfix">
+
+
+
+
+                                      <img src="https://samskipnaden.no/sites/default/files/2017-10/vegetar.svg" alt="Vegetarisk" title="Vegetarisk" />
+
+
+                                    </div>
+
+                                  </span>
+                                </div>
+                                <div class="views-field views-field-field-description">
+                                  <div class="field-content">Potetbåter, ostesaus, jalapeños, krydder</div>
+                                </div>
+                                <div class="views-field views-field-field-allergener">
+                                  <span class="views-label views-label-field-allergener">Allergener: </span>
+                                  <div class="field-content">melk</div>
+                                </div>
+                              </li>
+                              <li>
+                                <div class="views-field views-field-field-price">
+                                  <div class="field-content">65,-</div>
+                                </div>
+                                <div class="views-field views-field-nothing">
+                                  <span class="field-content">
+                                    <strong>Cheese &amp; Bacon Fries
+                                    </strong>
+                                  </span>
+                                </div>
+                                <div class="views-field views-field-field-description">
+                                  <div class="field-content">Potetbåter, bacon, ostesaus, dill, krydder</div>
+                                </div>
+                                <div class="views-field views-field-field-allergener">
+                                  <span class="views-label views-label-field-allergener">Allergener: </span>
+                                  <div class="field-content">melk</div>
+                                </div>
+                              </li>
+                              <li>
+                                <div class="views-field views-field-field-price">
+                                  <div class="field-content">45,-</div>
+                                </div>
+                                <div class="views-field views-field-nothing">
+                                  <span class="field-content">
+                                    <strong>Plain Dog
+                                    </strong>
+                                  </span>
+                                </div>
+                                <div class="views-field views-field-field-description">
+                                  <div class="field-content">Pølse i brød, med dressing, løk og salat.</div>
+                                </div>
+                                <div class="views-field views-field-field-allergener">
+                                  <span class="views-label views-label-field-allergener">Allergener: </span>
+                                  <div class="field-content">hvete (i brødet), egg</div>
+                                </div>
+                              </li>
+                              <li>
+                                <div class="views-field views-field-field-price">
+                                  <div class="field-content">65,-</div>
+                                </div>
+                                <div class="views-field views-field-nothing">
+                                  <span class="field-content">
+                                    <strong>Chili Dog
+                                    </strong>
+                                  </span>
+                                </div>
+                                <div class="views-field views-field-field-description">
+                                  <div class="field-content">Pølse i brød, med ostesaus, løk, salat og chili.</div>
+                                </div>
+                                <div class="views-field views-field-field-allergener">
+                                  <span class="views-label views-label-field-allergener">Allergener: </span>
+                                  <div class="field-content">melk, hvete (i brødet), egg</div>
+                                </div>
+                              </li>
+                              <li>
+                                <div class="views-field views-field-field-price">
+                                  <div class="field-content">65,-</div>
+                                </div>
+                                <div class="views-field views-field-nothing">
+                                  <span class="field-content">
+                                    <strong>BBQ Cheese Dog
+                                    </strong>
+                                  </span>
+                                </div>
+                                <div class="views-field views-field-field-description">
+                                  <div class="field-content">Pølse i brød, med BBQ-saus, ostesaus, salat og sprøstekt løk.</div>
+                                </div>
+                                <div class="views-field views-field-field-allergener">
+                                  <span class="views-label views-label-field-allergener">Allergener: </span>
+                                  <div class="field-content">melk, hvete (i brødet), egg</div>
+                                </div>
+                              </li>
+                              <li>
+                                <div class="views-field views-field-field-price">
+                                  <div class="field-content">75,-</div>
+                                </div>
+                                <div class="views-field views-field-nothing">
+                                  <span class="field-content">
+                                    <strong>BLT-sandwich
+                                    </strong>
+                                  </span>
+                                </div>
+                                <div class="views-field views-field-field-description">
+                                  <div class="field-content">Bacon, salat, tomat og dressing.</div>
+                                </div>
+                                <div class="views-field views-field-field-allergener">
+                                  <span class="views-label views-label-field-allergener">Allergener: </span>
+                                  <div class="field-content">hvete (i brødet), egg</div>
+                                </div>
+                              </li>
+                              <li>
+                                <div class="views-field views-field-field-price">
+                                  <div class="field-content">75,-</div>
+                                </div>
+                                <div class="views-field views-field-nothing">
+                                  <span class="field-content">
+                                    <strong>Blue Cheese &amp; Bacon Sandwich
+                                    </strong>
+                                  </span>
+                                </div>
+                                <div class="views-field views-field-field-description">
+                                  <div class="field-content">Blåmuggost, bacon, BBQ-saus, salat, tomat og dressing</div>
+                                </div>
+                                <div class="views-field views-field-field-allergener">
+                                  <span class="views-label views-label-field-allergener">Allergener: </span>
+                                  <div class="field-content">melk, hvete (i brødet), egg</div>
+                                </div>
+                              </li>
+                              <li>
+                                <div class="views-field views-field-field-price">
+                                  <div class="field-content">75,-</div>
+                                </div>
+                                <div class="views-field views-field-nothing">
+                                  <span class="field-content">
+                                    <strong>Brie &amp; Lingonberries Sandwich
+                                    </strong>
+                                    <div class="taxonomy-term taxonomy-term--type-food-icons taxonomy-term--view-mode-default ds-1col clearfix">
+
+
+
+
+                                      <img src="https://samskipnaden.no/sites/default/files/2017-10/ikke-svin.svg" alt="Uten svin" title="Uten svin" />
+
+
+                                    </div>
+
+                                  </span>
+                                </div>
+                                <div class="views-field views-field-field-description">
+                                  <div class="field-content">Brie, tyttebær, salat, dressing og tomat.</div>
+                                </div>
+                                <div class="views-field views-field-field-allergener">
+                                  <span class="views-label views-label-field-allergener">Allergener: </span>
+                                  <div class="field-content">melk, hvete (i brødet), egg</div>
+                                </div>
+                              </li>
+
+                            </ul>
+
+                          </div>
+
+
+
+
+
+
+
+
+
+
+                        </div>
+                      </div>
+
+
+
+
+
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </section>
+          <!-- /#content -->
+
+          <aside id="sidebar-first" class="column sidebar first">
+            <div>
+              <div id="block-campusmenublock-3" class="block-samskipnaden-util block-campus-menu-block">
+
+
+
+                <ul data-block-id="block-campusmenublock-3" class="menu">
+                  <li class="menu-item is-open">
+                    <a href="https://samskipnaden.no/dagens-meny/day/1" target="">Ukesmeny</a>
+                  </li>
+                  <li class="menu-item menu-item--expanded is-open">
+                    <a href="/tromso/mat-drikke/finn" target="" data-drupal-link-system-path="tromso/mat-drikke/finn">Våre kafeer og kaffebarer</a>
+                    <i class="expand"></i>
+                    <ul class="menu">
+                      <li class="menu-item is-open">
+                        <a href="/tromso/mat-drikke/vare-kafeer-og-kaffebarer/bazinga" target="" data-drupal-link-system-path="node/46">BAZINGA</a>
+                      </li>
+                      <li class="menu-item is-open">
+                        <a href="/tromso/mat-drikke/vare-kafeer-og-kaffebarer/farmasikafeen" target="" data-drupal-link-system-path="node/301">Farmasikafeen</a>
+                      </li>
+                      <li class="menu-item is-open">
+                        <a href="/tromso/mat-drikke/vare-kafeer-og-kaffebarer/nfh-kafeen" target="" data-drupal-link-system-path="node/300">NFH-kafeen</a>
+                      </li>
+                      <li class="menu-item is-open">
+                        <a href="/tromso/mat-drikke/vare-kafeer-og-kaffebarer/ilp-kafeen" data-drupal-link-system-path="node/303">ILP-kafeen</a>
+                      </li>
+                      <li class="menu-item is-open">
+                        <a href="/tromso/mat-drikke/vare-kafeer-og-kaffebarer/ig-kafeen" data-drupal-link-system-path="node/299">IG-kafeen</a>
+                      </li>
+                      <li class="menu-item is-open">
+                        <a href="/tromso/mat-drikke/vare-kafeer-og-kaffebarer/markedet" data-drupal-link-system-path="node/379">Markedet</a>
+                      </li>
+                      <li class="menu-item is-open">
+                        <a href="/tromso/mat-drikke/vare-kafeer-og-kaffebarer/mat" data-drupal-link-system-path="node/290">MAT.</a>
+                      </li>
+                      <li class="menu-item is-open">
+                        <a href="/tromso/mat-drikke/vare-kafeer-og-kaffebarer/mh-kafeen" data-drupal-link-system-path="node/295">MH-kafeen</a>
+                      </li>
+                      <li class="menu-item is-open">
+                        <a href="/tromso/mat-drikke/vare-kafeer-og-kaffebarer/mix-kiosken" data-drupal-link-system-path="node/287">MIX-kiosken</a>
+                      </li>
+                      <li class="menu-item is-open">
+                        <a href="/tromso/mat-drikke/vare-kafeer-og-kaffebarer/musikkafeen" data-drupal-link-system-path="node/304">Musikkafeen</a>
+                      </li>
+                      <li class="menu-item is-open">
+                        <a href="/tromso/mat-drikke/vare-kafeer-og-kaffebarer/sjampanjekafeen" data-drupal-link-system-path="node/485">Sjampanjekafeen</a>
+                      </li>
+                      <li class="menu-item is-open">
+                        <a href="/tromso/mat-drikke/vare-kafeer-og-kaffebarer/tannkafeen" data-drupal-link-system-path="node/302">Tannkafeen</a>
+                      </li>
+                      <li class="menu-item is-open">
+                        <a href="/tromso/mat-drikke/vare-kafeer-og-kaffebarer/teorifagskafeen" target="" title="Vi stenger klokken 1500 fredag 02.12 grunnet arrangement"
+                          data-drupal-link-system-path="node/285">Teorifagskafeen</a>
+                      </li>
+                      <li class="menu-item is-open">
+                        <a href="/tromso/mat-drikke/vare-kafeer-og-kaffebarer/isv-kafeen" data-drupal-link-system-path="node/297">ISV-kafeen</a>
+                      </li>
+                      <li class="menu-item is-open">
+                        <a href="/tromso/mat-drikke/vare-kafeer-og-kaffebarer/kaffebaren-c8h10n4o2" data-drupal-link-system-path="node/293">Kaffebaren C8H10N4O2</a>
+                      </li>
+                      <li class="menu-item is-open">
+                        <a href="/tromso/mat-drikke/vare-kafeer-og-kaffebarer/kantiner-vgs" data-drupal-link-system-path="node/1010">Kantiner VGS</a>
+                      </li>
+                    </ul>
+
+                  </li>
+                  <li class="menu-item is-open">
+                    <a href="/tromso/mat-drikke/kontakt" target="" data-drupal-link-system-path="node/221">Kontakt</a>
+                  </li>
+                  <li class="menu-item is-open">
+                    <a href="/tromso/mat-drikke/om-oss" data-drupal-link-system-path="node/220">Om oss</a>
+                  </li>
+                  <li class="menu-item is-open">
+                    <a href="/tromso/mat-drikke/middagskort" data-drupal-link-system-path="node/566">Middagskort</a>
+                  </li>
+                  <li class="menu-item menu-item--expanded is-open">
+                    <a href="/tromso/oppskrifter" data-drupal-link-system-path="node/568">Oppskrifter</a>
+                    <i class="expand"></i>
+                    <ul class="menu">
+                      <li class="menu-item is-open">
+                        <a href="/tromso/sverres-thaisuppe" data-drupal-link-system-path="node/569">Sverres Thaisuppe</a>
+                      </li>
+                    </ul>
+
+                  </li>
+                  <li class="menu-item is-open">
+                    <a href="http://catering.sito.no/" target="">Catering </a>
+                  </li>
+                  <li class="menu-item is-open">
+                    <a href="/tromso/mat-drikke/studentmatkonferansen-2018" data-drupal-link-system-path="node/3002">Studentmatkonferansen 2018</a>
+                  </li>
+                </ul>
+
+
+
+              </div>
+
+            </div>
+
+          </aside>
+          <!-- /#sidebar-first -->
+
+        </div>
+        <!-- /.container -->
+      </div>
+      <!-- /#main -->
+
+      <!-- ______________________ FOOTER-TOP _______________________ -->
+
+      <!-- ______________________ FOOTER-TOP-2 _______________________ -->
+
+      <!-- ______________________ FOOTER _______________________ -->
+
+      <footer id="footer">
+        <div class="container">
+          <div>
+            <div id="block-sitebranding" class="block-system block-system-branding-block">
+
+
+              <a href="/" title="Hjem" rel="home" class="site-logo">
+                <img src="/themes/samskipnaden/logo.svg" alt="Hjem" />
+              </a>
+            </div>
+            <nav role="navigation" aria-labelledby="block-samskipnaden-footer-menu" id="block-samskipnaden-footer" class="block block-menu navigation menu--footer">
+
+              <h2 id="block-samskipnaden-footer-menu">Samskipnaden
+                <span class="footer-toggle"></span>
+              </h2>
+
+
+              <div class="footer-col-inner">
+
+                <ul data-block-id="block-samskipnaden-footer" class="menu">
+                  <li class="menu-item is-open">
+                    <a href="/tromso/om-oss" target="" data-drupal-link-system-path="node/353">Om oss</a>
+                  </li>
+                  <li class="menu-item is-open">
+                    <a href="/tromso/styret" target="" data-drupal-link-system-path="node/343">Styret</a>
+                  </li>
+                  <li class="menu-item is-open">
+                    <a href="/tromso/ledelsen" target="" data-drupal-link-system-path="node/337">Ledelsen</a>
+                  </li>
+                  <li class="menu-item is-open">
+                    <a href="/tromso/presse" target="" data-drupal-link-system-path="node/373">Presse</a>
+                  </li>
+                  <li class="menu-item is-open">
+                    <a href="/kontakt" target="" data-drupal-link-system-path="node/644">Kontakt</a>
+                  </li>
+                  <li class="menu-item is-open">
+                    <a href="/tromso/jobbe-hos-oss" target="" data-drupal-link-system-path="node/355">Ledige stillinger</a>
+                  </li>
+                  <li class="menu-item is-open">
+                    <a href="https://intranett.samskipnaden.no/SitePages/Nyheter.aspx" target="">Intranett</a>
+                  </li>
+                  <li class="menu-item is-open">
+                    <a href="/cookies" target="" data-drupal-link-system-path="node/2799">Cookies</a>
+                  </li>
+                </ul>
+
+
+
+              </div>
+            </nav>
+            <div id="block-servicesenteret">
+
+              <h2>Servicesenteret
+                <span class="footer-toggle"></span>
+              </h2>
+
+              <div class="footer-col-inner">
+
+                <div class="body">
+                  <p>Teorifagbygget Hus 2
+                    <br /> 9037 Tromsø</p>
+                  <p> </p>
+                  <p>
+                    <span class="icon-tel-before">Tlf: 77 64 90 00</span>
+                    <br />
+                    <span class="icon-mail-before">
+                      <a href="mailto:post@samskipnaden.no">post@samskipnaden.no</a>
+                    </span>
+                    <br />
+                    <span class="icon-mail-before">
+                      <a href="mailto:bolig@samskipnaden.no">bolig@samskipnaden.no</a>
+                    </span>
+                  </p>
+                </div>
+
+              </div>
+            </div>
+            <nav role="navigation" aria-labelledby="block-kontaktstudiesteder-menu" id="block-kontaktstudiesteder" class="block block-menu navigation menu--kontakt-studiesteder">
+
+              <h2 id="block-kontaktstudiesteder-menu">Kontakt studiesteder
+                <span class="footer-toggle"></span>
+              </h2>
+
+
+              <div class="footer-col-inner">
+
+                <ul data-block-id="block-kontaktstudiesteder" class="menu">
+                  <li class="menu-item is-open">
+                    <a href="/alta/kontakt-alta" data-drupal-link-system-path="node/357">Alta</a>
+                  </li>
+                  <li class="menu-item is-open">
+                    <a href="/hammerfest/kontakt-hammerfest" data-drupal-link-system-path="node/361">Hammerfest</a>
+                  </li>
+                  <li class="menu-item is-open">
+                    <a href="/harstad/kontakt-harstad" data-drupal-link-system-path="node/358">Harstad</a>
+                  </li>
+                  <li class="menu-item is-open">
+                    <a href="/narvik/kontakt-narvik" data-drupal-link-system-path="node/359">Narvik</a>
+                  </li>
+                  <li class="menu-item is-open">
+                    <a href="/svalbard/kontakt-svalbard" data-drupal-link-system-path="node/360">Svalbard</a>
+                  </li>
+                  <li class="menu-item is-open">
+                    <a href="/tromso/kontakt-tromso" data-drupal-link-system-path="node/356">Tromsø</a>
+                  </li>
+                </ul>
+
+
+
+              </div>
+            </nav>
+            <div id="block-credits" class="block-block-content block-block-content0035b634-b3ba-45e9-8b1e-936df9664347">
+
+
+
+              <div class="body">
+                <p>Utviklet av
+                  <a href="http://ramsalt.com">Ramsalt Lab</a>. Design av
+                  <a href="http://tank.no/">Tank</a>
+                </p>
+              </div>
+
+            </div>
+
+          </div>
+
+          <a href="#" class="footer-up"></a>
+        </div>
+      </footer>
+      <!-- /#footer -->
+
+    </div>
+    <!-- /.layout-container -->
+
+  </div>
+
+
+  <script type="application/json" data-drupal-selector="drupal-settings-json">
+    {
+      "path": {
+        "baseUrl": "\/",
+        "scriptPath": null,
+        "pathPrefix": "",
+        "currentPath": "dagens-meny\/day\/1",
+        "currentPathIsAdmin": false,
+        "isFront": false,
+        "currentLanguage": "nb"
+      },
+      "pluralDelimiter": "\u0003",
+      "google_analytics": {
+        "trackOutbound": true,
+        "trackMailto": true,
+        "trackDownload": true,
+        "trackDownloadExtensions": "7z|aac|arc|arj|asf|asx|avi|bin|csv|doc(x|m)?|dot(x|m)?|exe|flv|gif|gz|gzip|hqx|jar|jpe?g|js|mp(2|3|4|e?g)|mov(ie)?|msi|msp|pdf|phps|png|ppt(x|m)?|pot(x|m)?|pps(x|m)?|ppam|sld(x|m)?|thmx|qtm?|ra(m|r)?|sea|sit|tar|tgz|torrent|txt|wav|wma|wmv|wpd|xls(x|m|b)?|xlt(x|m)|xlam|xml|z|zip"
+      },
+      "ajaxTrustedUrl": {
+        "\/search": true
+      },
+      "user": {
+        "uid": 0,
+        "permissionsHash": "646a923954a572fa9ed4800ed25128b372e6412143dbfbdffc05aa50d531ecb8"
+      }
+    }
+
+  </script>
+  <script src="/sites/default/files/js/js_SwJ3HUfY9nQ8efqDWXYHp6VVnkxDzgTaLvlscbONHVc.js"></script>
+
+  <script type="text/javascript">
+    window.NREUM || (NREUM = {});
+    NREUM.info = {
+      "beacon": "bam.nr-data.net",
+      "licenseKey": "258a197b3e",
+      "applicationID": "93634285",
+      "transactionName": "YAEANhRWWUQHUEBQW1lLIwESXlhZSUNVXlFoBwMBDlI=",
+      "queueTime": 0,
+      "applicationTime": 18,
+      "atts": "TEYDQFxMSko=",
+      "errorBeacon": "bam.nr-data.net",
+      "agent": ""
+    }
+
+  </script>
+</body>
+
+</html>

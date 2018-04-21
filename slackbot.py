@@ -1,95 +1,104 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import os
-import time
-import random
 import re
+import logging
+import time
 from slackclient import SlackClient
-from lunchlady import string_menu, daily_menu, pizza_menu, bazinga_menu, mat_menu, joke_menu, stronk_joke_menu
-from datetime import datetime, timedelta
+from plugins.chatter.chatter import Chatter
+from plugins.core.core import DailyMenu
 
-BOT_ID = "10" #os.environ.get("BOT_ID")
-RESPONSE_DELAY = timedelta(minutes=1)
+logger = logging.getLogger('doris')
+logger.setLevel(logging.INFO)
+ch = logging.StreamHandler()
+formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
+ch.setFormatter(formatter)
+logger.addHandler(ch)
 
 
 class Lunchlady(object):
-    def __init__(self):
-        self.can_speak_again = datetime.now()
-        self.name_match = re.compile("<@" + BOT_ID + ">|doris", flags=re.I)
+    def __init__(self, slackclient):
+        self.client = slackclient
+        self.load_modules()
         self.keywords = {
-            "lunsj|lunch|dinner|middag": daily_menu,
-            "pizza": pizza_menu,
-            "bazinga": bazinga_menu,
-            "mat": mat_menu,
-            "stronk": stronk_joke_menu,
-            "joke": joke_menu
-            }
-        self.other_responses = ["Whatever.",
-                                "Okey dokey.",
-                                "Yon meat, 'tis sweet as summer's wafting breeze.",
-                                "Mine ears are only open to the pleas of those who speak ye olde English.",
-                                "Speak up, kid.",
-                                "Your mother wears army boots."]
+            'lunch|lunsj': DailyMenu
+        }
 
-    def handle_command(self, command, channel):
-        """
-            Receives commands directed at the bot and determines if they
+    def load_modules(self):
+        pass
+
+    def handle_command(self, user, channel, command):
+        """Receives commands directed at the bot and determines if they
             are valid commands. If so, then acts on the commands. If not,
             returns back what it needs for clarification.
         """
-        if datetime.now() < self.can_speak_again:
-            print("can't speak until", self.can_speak_again)
-        else:
-            self.can_speak_again = datetime.now() + RESPONSE_DELAY
 
-        response = ""
-        print(command)
-        for string, menu in self.keywords.items():
-            if re.compile(string, flags=re.I).search(command):
-                response = string_menu(menu())
+        user = self.client.server.users.find(user)
+        logger.info(f"{user.real_name} ({user.name}): '{command}'")
+
+        response = None
+        for word, responder in self.keywords.items():
+            if re.compile(word, flags=re.I).search(command):
+                logger.debug(f"{command} matched with {word}")
+                response = responder().response()
                 break
-        else:
-            response = random.choice(self.other_responses)
 
         if not response:
-            response = "There are no menus available right now. How about you order some pizza instead?\n" + pizza_menu()
+            response = "No food today, sweetheart."
 
-        slack_client.api_call("chat.postMessage", channel=channel,
-                              unfurl_links=False,
-                              text=response, as_user=True)
+        logger.debug(f"Responding with {response[:40]}")
+        slack_client.api_call(
+            "chat.postMessage",
+            channel=channel,
+            text=response,
+            unfurl_links=False,
+            as_user=True
+        )
 
     def parse_slack_output(self, slack_rtm_output):
+        """Returns the user, channel and the text
+        from a slack message object
         """
-            The Slack Real Time Messaging API is an events firehose.
-            this parsing function returns None unless a message is
-            directed at the Bot, based on its ID.
-        """
-        if slack_rtm_output:
-            for output in slack_rtm_output:
-                if output and 'text' in output and self.name_match.search(output['text']):
-                    return output['text'], output['channel']
-        return None, None
+        if not slack_rtm_output:
+            return None, None, None
 
+        logger.debug(f"Incoming: {slack_rtm_output}")
+        for output in slack_rtm_output:
+            if 'text' in output:
+                return output['user'], output['channel'], output['text']
 
-def reconnect(bot):
-    if slack_client.rtm_connect():
-        print("Doris is connected and running!")
+        return None, None, None
+
+    def chat_loop(self):
         while True:
-            command, channel = bot.parse_slack_output(slack_client.rtm_read())
-            if command and channel:
-                bot.handle_command(command, channel)
-            time.sleep(READ_WEBSOCKET_DELAY)
-    else:
-        print("Connection failed. Invalid Slack token or bot ID?")
+            user, channel, text = self.parse_slack_output(
+                self.client.rtm_read())
+            # Only respond if bot was mentioned by name
+            if text and self.name_match.search(text):
+                self.handle_command(user, channel, text)
+            # Sleep 1 second between reads
+            time.sleep(1)
 
+    def connect(self):
+        if self.client.rtm_connect():
+            names = self.client.server.login_data['self']['name'].split('_')
+            name = " ".join(name.capitalize() for name in names)
+            ID = self.client.server.login_data['self']['id']
+            self.name_match = re.compile(
+                f"<@{ID}>|{'|'.join(names)}", flags=re.I)
+            logger.info(f"{name} ({ID}) is connected and running!")
+
+            self.chat_loop()
+        else:
+            logger.fatal("Connection failed. Invalid Slack token or bot ID?")
+            exit()
 
 
 if __name__ == "__main__":
     slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
-    READ_WEBSOCKET_DELAY = 1  # 1 second delay between reading from firehose
-    doris = Lunchlady()
+    doris = Lunchlady(slack_client)
     while True:
         try:
-            reconnect(doris)
+            doris.connect()
         except ConnectionResetError:
             continue
