@@ -5,6 +5,7 @@ import sys
 import re
 import logging
 import time
+from os import path
 from slackclient import SlackClient
 from plugins.utils import plugin_loader
 
@@ -19,7 +20,7 @@ ch.setFormatter(formatter)
 logger.addHandler(ch)
 
 # Everything is logged to file
-fh = logging.FileHandler('doris.log')
+fh = logging.FileHandler(path.join('log', 'doris.log'))
 fh.setLevel(logging.DEBUG)
 fh.setFormatter(formatter)
 logger.addHandler(fh)
