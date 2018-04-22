@@ -1,5 +1,5 @@
 from unittest import TestCase
-from .core import DailyMenu
+from core import DailyMenu
 from os import path
 from datetime import date
 

@@ -5,8 +5,7 @@ import re
 import logging
 import time
 from slackclient import SlackClient
-from plugins.chatter.chatter import Chatter
-from plugins.core.core import DailyMenu
+from plugins.utils import plugin_loader
 
 logger = logging.getLogger('doris')
 logger.setLevel(logging.INFO)
@@ -19,13 +18,7 @@ logger.addHandler(ch)
 class Lunchlady(object):
     def __init__(self, slackclient):
         self.client = slackclient
-        self.load_modules()
-        self.keywords = {
-            'lunch|lunsj': DailyMenu
-        }
-
-    def load_modules(self):
-        pass
+        self.plugins = plugin_loader()
 
     def handle_command(self, user, channel, command):
         """Receives commands directed at the bot and determines if they
@@ -36,15 +29,22 @@ class Lunchlady(object):
         user = self.client.server.users.find(user)
         logger.info(f"{user.real_name} ({user.name}): '{command}'")
 
-        response = None
-        for word, responder in self.keywords.items():
-            if re.compile(word, flags=re.I).search(command):
-                logger.debug(f"{command} matched with {word}")
-                response = responder().response()
-                break
+        handlers = []
+        for plugin in self.plugins:
+            if plugin().can_respond_to(command):
+                logger.debug(
+                    f"'{command}' can be handled by with {plugin.__name__}")
+                handlers.append(plugin)
+
+        if handlers:
+            response = handlers[0]().response()
+
+        if len(handlers) > 1:
+            logger.warning(
+                f"Found {len(handlers)} handlers for '{command}': {[handler.__name__ for handler in handlers]}")
 
         if not response:
-            response = "No food today, sweetheart."
+            response = "Nothing today, sweetheart."
 
         logger.debug(f"Responding with {response[:40]}")
         slack_client.api_call(
@@ -55,24 +55,24 @@ class Lunchlady(object):
             as_user=True
         )
 
-    def parse_slack_output(self, slack_rtm_output):
+    def get_slack_message(self):
         """Returns the user, channel and the text
-        from a slack message object
+        from a slack event that includes a text message
         """
-        if not slack_rtm_output:
+        slack_events = self.client.rtm_read()
+        if not slack_events:
             return None, None, None
 
-        logger.debug(f"Incoming: {slack_rtm_output}")
-        for output in slack_rtm_output:
-            if 'text' in output:
-                return output['user'], output['channel'], output['text']
+        logger.debug(f"Incoming: {slack_events}")
+        for event in slack_events:
+            if 'text' in event:
+                return event['user'], event['channel'], event['text']
 
         return None, None, None
 
     def chat_loop(self):
         while True:
-            user, channel, text = self.parse_slack_output(
-                self.client.rtm_read())
+            user, channel, text = self.get_slack_message()
             # Only respond if bot was mentioned by name
             if text and self.name_match.search(text):
                 self.handle_command(user, channel, text)

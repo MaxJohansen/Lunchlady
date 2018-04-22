@@ -11,7 +11,12 @@ dirname = path.dirname(__file__)
 base_url = "http://samskipnaden.no/dagens-meny/day/1/{:%Y%m%d}"
 
 
-class DailyMenu(object):
+class Core(object):
+    trigger = re.compile('lunsj|lunch|middag|dinner', flags=re.I)
+
+    def can_respond_to(self, sentence):
+        return re.search(self.trigger, sentence)
+
     def __init__(self, source=None, date=date.today()):
         if source is None:  # pragma: no cover
             self.source = urlopen(base_url.format(date))
