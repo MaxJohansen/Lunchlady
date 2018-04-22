@@ -6,40 +6,62 @@ from itertools import takewhile
 from os import path
 from json import loads
 import re
-logger = logging.getLogger('doris.plugins.core')
+logger = logging.getLogger(f"doris.plugins.{__name__}")
 dirname = path.dirname(__file__)
 
 base_url = "http://samskipnaden.no/dagens-meny/day/1/{:%Y%m%d}"
 
 
 class Core(object):
-    trigger = re.compile('lunsj|lunch|middag|dinner', flags=re.I)
+    words = [
+        'lunsj',
+        'lunch',
+        'middag',
+        'dinner',
+        'cook',
+        'food',
+        'h[au]ngr?y'
+    ]
+    trigger = re.compile("|".join(words), flags=re.I)
 
     @classmethod
     def can_respond_to(self, sentence):
-        return bool(re.search(self.trigger, sentence))
+        relevant = bool(re.search(self.trigger, sentence))
+        weekday = date.today().weekday() in range(0, 5)
+        if not weekday:
+            logger.debug("Cannot find cafeteria menus on weekends")
+        return relevant and weekday
 
     def __init__(self, source=None, date=date.today()):
         if source is None:  # pragma: no cover
             self.source = urlopen(base_url.format(date))
         else:
             self.source = source
+        self.date = date
         self.day = date.weekday()
         self.opening_hours = loads(
             open(path.join(dirname, "opening_hours.json")).read())
 
-    def response(self):
+    def response(self, *args):
         daily_menus = self.soupify() \
             .find("div", class_="view-content-rows") \
             .find_all("div", class_="view-grouping-title")
-        places = dict()
 
+        if not daily_menus:
+            logger.info(f"No menus found on {self.date}")
+            return "The cafeterias are closed today."
+
+        logger.info(
+            f"Finding menus from {', '.join(x.string for x in daily_menus)}")
+
+        places = dict()
         for x in daily_menus:
             place = dict()
-            for submenu in takewhile(lambda x: x not in daily_menus, x.find_next_siblings("div")):
+            for submenu in takewhile(lambda z: z not in daily_menus, x.find_next_siblings("div")):
                 try:
                     mealtime = submenu.find("h3").string
                 except AttributeError:
+                    logger.info(f"Found uncategorized meals at {x.string}")
                     mealtime = "Ukategorisert"
                 place[mealtime] = self.parse_menu_from_ul(
                     submenu("li"))
@@ -51,9 +73,6 @@ class Core(object):
         return BeautifulSoup(html, "html.parser")
 
     def string_menu(self, menu_dict):
-        if not menu_dict:
-            return "The cafeterias are closed today."
-
         result = ""
         for place, menus in menu_dict.items():
             opening_hours = self.get_opening_hours(place)
@@ -83,11 +102,11 @@ class Core(object):
 
     def parse_menu_from_ul(self, unordered_list):
         menu = list()
-        for x in unordered_list:
-            prices = [int(x) for x in re.findall(
-                "\d+", self.extract_element(x, "field-price"))]
-            name = self.extract_element(x, "nothing")
-            desc = self.extract_element(x, "field-description")
+        for li in unordered_list:
+            prices = [int(price) for price in re.findall(
+                "\d+", self.extract_element(li, "field-price"))]
+            name = self.extract_element(li, "nothing")
+            desc = self.extract_element(li, "field-description")
             menu.append(Meal(name, desc, prices))
 
         return menu

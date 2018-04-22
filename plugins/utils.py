@@ -2,7 +2,7 @@ import logging
 import sys
 from os import path, listdir
 from importlib import import_module
-logger = logging.getLogger('doris.plugins')
+logger = logging.getLogger(f"doris.{__name__}")
 
 dirname = path.dirname(__file__)
 sys.path.insert(0, dirname)
