@@ -15,7 +15,7 @@ formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
 
 # INFO is logged to stderr
 ch = logging.StreamHandler(sys.stdout)
-ch.setLevel(logging.INFO)
+ch.setLevel(logging.DEBUG)
 ch.setFormatter(formatter)
 logger.addHandler(ch)
 
