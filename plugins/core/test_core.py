@@ -37,7 +37,7 @@ class TestCore(TestCase):
         "On the weekends everything is closed, expect an empty response"
         weekend = date(2018, 4, 21)
 
-        expected = ""
+        expected = "The cafeterias are closed today."
 
         weekend_menu = Core(
             source=open(path.join(fixtures, "weekend.html")),

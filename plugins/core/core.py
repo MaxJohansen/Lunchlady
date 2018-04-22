@@ -1,3 +1,4 @@
+import logging
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 from datetime import date, time
@@ -5,7 +6,7 @@ from itertools import takewhile
 from os import path
 from json import loads
 import re
-
+logger = logging.getLogger('doris.plugins.core')
 dirname = path.dirname(__file__)
 
 base_url = "http://samskipnaden.no/dagens-meny/day/1/{:%Y%m%d}"
@@ -16,7 +17,7 @@ class Core(object):
 
     @classmethod
     def can_respond_to(self, sentence):
-        return re.search(self.trigger, sentence)
+        return bool(re.search(self.trigger, sentence))
 
     def __init__(self, source=None, date=date.today()):
         if source is None:  # pragma: no cover
@@ -31,24 +32,28 @@ class Core(object):
         daily_menus = self.soupify() \
             .find("div", class_="view-content-rows") \
             .find_all("div", class_="view-grouping-title")
-        das_dict = dict()
+        places = dict()
 
         for x in daily_menus:
-            das_dict[x.string] = dict()
+            place = dict()
             for submenu in takewhile(lambda x: x not in daily_menus, x.find_next_siblings("div")):
                 try:
                     mealtime = submenu.find("h3").string
                 except AttributeError:
                     mealtime = "Ukategorisert"
-                das_dict[x.string][mealtime] = self.parse_menu_from_ul(
+                place[mealtime] = self.parse_menu_from_ul(
                     submenu("li"))
-        return self.string_menu(das_dict)
+            places[x.string] = place
+        return self.string_menu(places)
 
     def soupify(self):
         html = self.source.read()
         return BeautifulSoup(html, "html.parser")
 
     def string_menu(self, menu_dict):
+        if not menu_dict:
+            return "The cafeterias are closed today."
+
         result = ""
         for place, menus in menu_dict.items():
             opening_hours = self.get_opening_hours(place)
