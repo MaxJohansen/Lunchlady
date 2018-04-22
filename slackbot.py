@@ -66,6 +66,7 @@ class Lunchlady(object):
                 logger.debug(f"\"{command}\" did not match any handlers")
                 chatty = next((x for x in self.plugins if re.match(
                     "chat", x.__name__, flags=re.I)))
+                logger.info(f"Asking {chatty.__name__} plugin for response")
                 response = chatty().response()
             except (StopIteration, AttributeError):
                 logger.debug("Unable to generate response, using default")

@@ -18,7 +18,8 @@ class Joke(object):
         if re.search('stronk', command, re.I):
             logger.debug('Fetching a STRONK joke!')
             joke = get(self.stronk_joke_url)
-            return joke.json()['value']['joke']
+            joke = joke.json()['value']['joke']
+            return joke.replace('he', 'she').replace('his', 'her')
         else:
             logger.debug('Fetching a dad joke')
             joke = get(self.joke_url, headers={'Accept': 'text/plain'})
