@@ -36,6 +36,8 @@ class Constant(object):
 
     def response(self, *args):
         place = self.trigger.search(args[0])[0].upper()
+        if place == 'KIOSK':
+            place = 'MIX'
         if not self.is_open(place):
             return f"*{place}* is closed today"
         self.source = urlopen(urls[place])
