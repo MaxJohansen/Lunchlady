@@ -20,7 +20,7 @@ ch.setFormatter(formatter)
 logger.addHandler(ch)
 
 # Everything is logged to file
-fh = logging.FileHandler(path.join('log', 'doris.log'))
+fh = logging.FileHandler(path.abspath(path.join('log', 'doris.log')))
 fh.setLevel(logging.DEBUG)
 fh.setFormatter(formatter)
 logger.addHandler(fh)
