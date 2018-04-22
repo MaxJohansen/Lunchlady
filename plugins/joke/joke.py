@@ -19,7 +19,12 @@ class Joke(object):
             logger.debug('Fetching a STRONK joke!')
             joke = get(self.stronk_joke_url)
             joke = joke.json()['value']['joke']
-            return joke.replace('he', 'she').replace('his', 'her')
+            return joke \
+                .replace(' he ', ' she ') \
+                .replace(' He ', ' She ') \
+                .replace(' he\'s ', ' she\'s') \
+                .replace(' his ', ' her ') \
+                .replace(' him ', ' her ')
         else:
             logger.debug('Fetching a dad joke')
             joke = get(self.joke_url, headers={'Accept': 'text/plain'})
