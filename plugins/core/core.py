@@ -14,6 +14,7 @@ base_url = "http://samskipnaden.no/dagens-meny/day/1/{:%Y%m%d}"
 class Core(object):
     trigger = re.compile('lunsj|lunch|middag|dinner', flags=re.I)
 
+    @classmethod
     def can_respond_to(self, sentence):
         return re.search(self.trigger, sentence)
 

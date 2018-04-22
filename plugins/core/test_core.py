@@ -1,5 +1,5 @@
 from unittest import TestCase
-from core import DailyMenu
+from core import Core
 from os import path
 from datetime import date
 
@@ -26,7 +26,7 @@ class TestCore(TestCase):
 >• Garasjesalg
 """
 
-        weekday_menu = DailyMenu(
+        weekday_menu = Core(
             source=open(path.join(fixtures, "weekday.html")),
             date=weekday
         )
@@ -39,9 +39,16 @@ class TestCore(TestCase):
 
         expected = ""
 
-        weekend_menu = DailyMenu(
+        weekend_menu = Core(
             source=open(path.join(fixtures, "weekend.html")),
             date=weekend
         )
 
         self.assertEqual(expected, weekend_menu.response())
+
+    def test_triggers(self):
+        "Ensure that plugin responds to the correct keywords"
+        self.assertTrue(Core.can_respond_to("lunsj pls"))
+        self.assertTrue(Core.can_respond_to("I want some lunch"))
+        self.assertTrue(Core.can_respond_to("hva er til middag?"))
+        self.assertTrue(Core.can_respond_to("din din dinner me up"))
