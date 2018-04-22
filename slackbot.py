@@ -5,7 +5,7 @@ import time
 import random
 import re
 from slackclient import SlackClient
-from lunchlady import string_menu, daily_menu, pizza_menu, bazinga_menu, mat_menu
+from lunchlady import string_menu, daily_menu, pizza_menu, bazinga_menu, mat_menu, joke_menu, stronk_joke_menu
 from datetime import datetime, timedelta
 
 BOT_ID = "10" #os.environ.get("BOT_ID")
@@ -20,7 +20,9 @@ class Lunchlady(object):
             "lunsj|lunch|dinner|middag": daily_menu,
             "pizza": pizza_menu,
             "bazinga": bazinga_menu,
-            "mat": mat_menu
+            "mat": mat_menu,
+            "stronk": stronk_joke_menu,
+            "joke": joke_menu
             }
         self.other_responses = ["Whatever.",
                                 "Okey dokey.",
