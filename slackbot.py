@@ -37,6 +37,9 @@ class Lunchlady(object):
         """
 
         user = self.client.server.users.find(user)
+        if user.real_name == self.name:
+            return
+
         logger.info(
             f"{user.real_name} ({user.name}): \"{command}\"")
 
@@ -44,11 +47,11 @@ class Lunchlady(object):
         for plugin in self.plugins:
             if plugin.can_respond_to(command):
                 logger.debug(
-                    f"'{command}' can be handled by {plugin.__name__}")
+                    f"\"{command}\" can be handled by {plugin.__name__}")
                 handlers.append(plugin)
 
         if len(handlers) > 1:
-            logger.warning("Found {} handlers for '{}': {}".format(
+            logger.warning("Found {} handlers for \"{}\": {}".format(
                 len(handlers),
                 command,
                 ", ".join(handler.__name__ for handler in handlers))
@@ -56,19 +59,19 @@ class Lunchlady(object):
 
         if handlers:
             handler = handlers[0]
-            logger.info(f"Responding with {handler.__name__}")
+            logger.info(f"Asking {handler.__name__} plugin for response")
             response = handler().response(command)
         else:
             try:
-                logger.debug(f"'{command}' did not match any handlers")
+                logger.debug(f"\"{command}\" did not match any handlers")
                 chatty = next((x for x in self.plugins if re.match(
                     "chat", x.__name__, flags=re.I)))
                 response = chatty().response()
-            except:
+            except (StopIteration, AttributeError):
                 logger.debug("Unable to generate response, using default")
                 response = "I don't understand what you want from me."
 
-        logger.debug(f"Responding with {response[:40]}")
+        logger.debug(f"Responding with \"{truncate(response)}\"")
         slack_client.api_call(
             "chat.postMessage",
             channel=channel,
@@ -95,7 +98,7 @@ class Lunchlady(object):
         while True:
             user, channel, text = self.get_slack_message()
             # Only respond if bot was mentioned by name
-            if text and self.name_match.search(text) and user is not self.ID:
+            if text and self.name_match.search(text):
                 self.handle_command(user, channel, text)
             # Sleep 1 second between reads
             time.sleep(1)
@@ -113,6 +116,12 @@ class Lunchlady(object):
         else:
             logger.fatal("Connection failed. Invalid Slack token or bot ID?")
             exit()
+
+
+def truncate(string):
+    if len(string) > 40:
+        string = string[:40]
+    return string + "..."
 
 
 if __name__ == "__main__":

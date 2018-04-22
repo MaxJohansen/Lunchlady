@@ -13,7 +13,7 @@ class Pizza(object):
 
     @classmethod
     def can_respond_to(self, sentence):
-        return re.search(self.trigger, sentence)
+        return bool(self.trigger.search(sentence))
 
     def response(self, *args):
         source = loads(open(pizza_file).read())

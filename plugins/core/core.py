@@ -1,7 +1,7 @@
 import logging
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
-from datetime import date, time
+from datetime import date
 from itertools import takewhile
 from os import path
 from json import loads
@@ -26,7 +26,7 @@ class Core(object):
 
     @classmethod
     def can_respond_to(self, sentence):
-        relevant = bool(re.search(self.trigger, sentence))
+        relevant = bool(self.trigger.search(sentence))
         weekday = date.today().weekday() in range(0, 5)
         if not weekday:
             logger.debug("Cannot find cafeteria menus on weekends")
@@ -62,7 +62,7 @@ class Core(object):
                     mealtime = submenu.find("h3").string
                 except AttributeError:
                     logger.info(f"Found uncategorized meals at {x.string}")
-                    mealtime = "Ukategorisert"
+                    mealtime = "Uncategorized"
                 place[mealtime] = self.parse_menu_from_ul(
                     submenu("li"))
             places[x.string] = place
@@ -76,8 +76,7 @@ class Core(object):
         result = ""
         for place, menus in menu_dict.items():
             opening_hours = self.get_opening_hours(place)
-            result += f"*{place}* (stenger *{opening_hours}* i dag) serverer:\n".format(place,
-                                                                                        opening_hours)
+            result += f"*{place}* (closes at *{opening_hours}* today) are serving:\n"
             for menu, items in menus.items():
                 result += f">*{menu}*\n"
                 for meal in sorted(items):
