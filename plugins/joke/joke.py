@@ -1,3 +1,4 @@
+import html
 import re
 from requests import get
 import logging
@@ -19,6 +20,7 @@ class Joke(object):
             logger.debug('Fetching a STRONK joke!')
             joke = get(self.stronk_joke_url)
             joke = joke.json()['value']['joke']
+            joke = html.unescape(joke)
             return joke \
                 .replace(' he ', ' she ') \
                 .replace(' He ', ' She ') \
@@ -28,4 +30,6 @@ class Joke(object):
         else:
             logger.debug('Fetching a dad joke')
             joke = get(self.joke_url, headers={'Accept': 'text/plain'})
-            return joke.content.decode("utf-8")
+            joke = joke.content.decode("utf-8")
+            joke = html.unescape(joke)
+            return joke
