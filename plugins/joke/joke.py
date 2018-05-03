@@ -22,9 +22,11 @@ class Joke(object):
             joke = joke.json()['value']['joke']
             joke = html.unescape(joke)
             return joke \
-                .replace(' he ', ' she ') \
                 .replace(' He ', ' She ') \
+                .replace(' he ', ' she ') \
+                .replace(' He\'s ', ' She\'s') \
                 .replace(' he\'s ', ' she\'s') \
+                .replace(' His ', ' Her ') \
                 .replace(' his ', ' her ') \
                 .replace(' him ', ' her ')
         else:
