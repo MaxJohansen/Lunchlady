@@ -61,8 +61,7 @@ class Core(object):
                 try:
                     mealtime = submenu.find("h3").string
                 except AttributeError:
-                    logger.info(f"Found uncategorized meals at {x.string}")
-                    mealtime = "Uncategorized"
+                    mealtime = "All day"
                 place[mealtime] = self.parse_menu_from_ul(
                     submenu("li"))
             places[x.string] = place
