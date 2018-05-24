@@ -61,7 +61,7 @@ class Core(object):
                 try:
                     mealtime = submenu.find("h3").string
                 except AttributeError:
-                    mealtime = "All day"
+                    mealtime = "Hele dagen"
                 place[mealtime] = self.parse_menu_from_ul(
                     submenu("li"))
             places[x.string] = place
