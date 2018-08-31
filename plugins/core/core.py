@@ -75,7 +75,8 @@ class Core(object):
         result = ""
         for place, menus in menu_dict.items():
             opening_hours = self.get_opening_hours(place)
-            result += f"*{place}* (closes at *{opening_hours}* today) are serving:\n"
+            opening_notice = f"(closes at *{opening_hours}* today)" if opening_hours else ""
+            result += f"*{place}* {opening_notice} are serving:\n"
             for menu, items in menus.items():
                 result += f">*{menu}*\n"
                 for meal in sorted(items):
@@ -83,7 +84,10 @@ class Core(object):
         return result
 
     def get_opening_hours(self, place):
-        return self.opening_hours[place][self.day]
+        place = self.opening_hours.get(place, None)
+        if not place:
+            return
+        return place[self.day]
 
     def extract_element(self, navstring, fieldname):
         try:
