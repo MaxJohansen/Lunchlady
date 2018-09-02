@@ -8,7 +8,7 @@ dirname = path.dirname(__file__)
 pizza_file = path.join(dirname, "pizza.json")
 
 
-class Pizza(object):
+class Pizza:
     trigger = re.compile('pizza', flags=re.I)
 
     @classmethod

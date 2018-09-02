@@ -9,7 +9,7 @@ dirname = path.dirname(__file__)
 chatter_lines = path.join(dirname, "lines.json")
 
 
-class Chatter(object):
+class Chatter:
     trigger = re.compile('h[ae]llo|howdy|h[ae][iy]', flags=re.I)
 
     @classmethod

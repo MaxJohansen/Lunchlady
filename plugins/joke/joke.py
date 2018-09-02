@@ -5,7 +5,7 @@ import logging
 logger = logging.getLogger(f"doris.plugins.{__name__}")
 
 
-class Joke(object):
+class Joke:
     trigger = re.compile('joke|funny', flags=re.I)
     joke_url = 'https://icanhazdadjoke.com'
     stronk_joke_url = 'http://api.icndb.com/jokes/random?firstName=Lunchlady&lastName=Doris'

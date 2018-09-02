@@ -15,7 +15,7 @@ urls = {
 }
 
 
-class Constant(object):
+class Constant:
     places = "|".join(["\\bMAT\\b", "\\bBAZINGA\\b", "\\bMIX\\b", "kiosk"])
     trigger = re.compile(places, flags=re.I)
 
@@ -81,7 +81,7 @@ class Constant(object):
         menu = list()
         for li in unordered_list:
             prices = [int(price) for price in re.findall(
-                "\d+", self.extract_element(li, "field-price"))]
+                "\\d+", self.extract_element(li, "field-price"))]
             name = self.extract_element(li, "nothing")
             desc = self.extract_element(li, "field-description")
             menu.append(Meal(name, desc, prices))
@@ -89,7 +89,7 @@ class Constant(object):
         return menu
 
 
-class Meal(object):
+class Meal:
     def __init__(self, name, description, prices):
         self.prices = prices
         self.price_string = " / ".join([str(x) for x in prices])

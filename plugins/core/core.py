@@ -12,7 +12,7 @@ dirname = path.dirname(__file__)
 base_url = "http://samskipnaden.no/dagens-meny/day/1/{:%Y%m%d}"
 
 
-class Core(object):
+class Core:
     words = [
         'lunsj',
         'lunch',
@@ -114,7 +114,7 @@ class Core(object):
         return menu
 
 
-class Meal(object):
+class Meal:
     def __init__(self, name, description, prices):
         self.prices = prices
         self.price_string = " / ".join([str(x) for x in prices])

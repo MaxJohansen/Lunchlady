@@ -26,7 +26,7 @@ fh.setFormatter(formatter)
 logger.addHandler(fh)
 
 
-class Lunchlady(object):
+class Lunchlady:
     def __init__(self, slackclient):
         self.client = slackclient
         self.plugins = plugin_loader()
@@ -122,8 +122,8 @@ class Lunchlady(object):
 
 def truncate(string):
     if len(string) > 40:
-        string = string[:40]
-    return string + "..."
+        return string[:37] + "..."
+    return string
 
 
 if __name__ == "__main__":
