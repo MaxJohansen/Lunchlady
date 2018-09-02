@@ -8,9 +8,10 @@ name = "pypi"
 requests = "==2.9.0"
 slackclient = "==1.0.5"
 "bs4" = "*"
-pytest = "*"
 
 [dev-packages]
+pytest = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.6"
+
