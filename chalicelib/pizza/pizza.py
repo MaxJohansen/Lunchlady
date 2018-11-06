@@ -2,6 +2,7 @@ import re
 from json import loads
 from os import path
 import logging
+
 logger = logging.getLogger(f"doris.plugins.{__name__}")
 
 dirname = path.dirname(__file__)
@@ -9,7 +10,7 @@ pizza_file = path.join(dirname, "pizza.json")
 
 
 class Pizza:
-    trigger = re.compile('pizza', flags=re.I)
+    trigger = re.compile("pizza", flags=re.I)
 
     @classmethod
     def can_respond_to(self, sentence):
@@ -20,6 +21,5 @@ class Pizza:
         logger.debug(f"Found {len(source)} pizza options")
         return "\n".join(
             f">• <{details['URL']}|{place}>: {details['Phone']}"
-            for place, details
-            in source.items()
+            for place, details in source.items()
         )

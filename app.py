@@ -1,138 +1,96 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# import os
-# import re
+import re
+import os
 import logging
-
-# import time
-# from plugins.utils import plugin_loader
+from requests import post
 from chalice import Chalice
+from chalicelib.utils import plugin_loader
+
+BOT_TOKEN = os.environ["BOT_TOKEN"]
+SLACK_URL = "https://slack.com/api/chat.postMessage"
 
 app = Chalice(app_name="lunchlady-doris")
+app.debug = True
 
+logging.basicConfig(
+    level=logging.DEBUG, format="%(name)s - %(levelname)s - %(message)s"
+)
 logger = logging.getLogger("doris")
-logger.setLevel(logging.DEBUG)
-formatter = logging.Formatter("%(name)s - %(levelname)s - %(message)s")
-
-# INFO is logged to stderr
-ch = logging.StreamHandler()
-ch.setLevel(logging.DEBUG)
-ch.setFormatter(formatter)
-logger.addHandler(ch)
 
 
-@app.route("/")
+@app.route("/", methods=["POST"])
 def index():
-    logger.warn("hello this is a warning")
-    logger.info("and this is not")
-    return {"hello": "world"}
+    data = app.current_request.json_body
+    if "challenge" in data:
+        return data["challenge"]
+
+    slack_event = data["event"]
+
+    if "bot_id" in slack_event:
+        logger.warn("Ignoring bot event")
+        return
+
+    user = slack_event["user"]
+    command = slack_event["text"]
+    channel = slack_event["channel"]
+    msgtype = slack_event["type"]
+
+    logging.info(f'[{channel}] {user}: "{command}"')
+
+    if not relevant_to_bot(slack_event):
+        logger.warn(f"Not relevant to bot: {command} type is {msgtype}")
+        return
+
+    response = get_response(command)
+    logger.debug(f'Responding with "{truncate(response)}"')
+    send_to(channel, response)
+    return response
 
 
-# class Lunchlady:
-#     def __init__(self, slackclient):
-#         self.client = slackclient
-#         self.plugins = plugin_loader()
-
-#     def handle_command(self, user, channel, command):
-#         """Receives commands directed at the bot and determines if they
-#             are valid commands. If so, then acts on the commands. If not,
-#             returns back what it needs for clarification.
-#         """
-
-#         user = self.client.server.users.find(user)
-#         if user.real_name == self.name:
-#             return
-
-#         logger.info(
-#             f"{user.real_name} ({user.name}): \"{command}\"")
-
-#         handlers = []
-#         for plugin in self.plugins:
-#             if plugin.can_respond_to(command):
-#                 logger.debug(
-#                     f"\"{command}\" can be handled by {plugin.__name__}")
-#                 handlers.append(plugin)
-
-#         if len(handlers) > 1:
-#             logger.warning("Found {} handlers for \"{}\": {}".format(
-#                 len(handlers),
-#                 command,
-#                 ", ".join(handler.__name__ for handler in handlers))
-#             )
-
-#         if handlers:
-#             handler = handlers[0]
-#             logger.info(f"Asking {handler.__name__} plugin for response")
-#             response = handler().response(command)
-#         else:
-#             try:
-#                 logger.debug(f"\"{command}\" did not match any handlers")
-#                 chatty = next((x for x in self.plugins if re.match(
-#                     "chat", x.__name__, flags=re.I)))
-#                 logger.info(f"Asking {chatty.__name__} plugin for response")
-#                 response = chatty().response()
-#             except (StopIteration, AttributeError):
-#                 logger.debug("Unable to generate response, using default")
-#                 response = "I don't understand what you want from me."
-
-#         logger.debug(f"Responding with \"{truncate(response)}\"")
-#         slack_client.api_call(
-#             "chat.postMessage",
-#             channel=channel,
-#             text=response,
-#             unfurl_links=False,
-#             as_user=True
-#         )
-
-#     def get_slack_message(self):
-#         """Returns the user, channel and the text
-#         from a slack event that includes a text message
-#         """
-#         slack_events = self.client.rtm_read()
-#         if not slack_events:
-#             return None, None, None
-
-#         for event in slack_events:
-#             if 'text' in event:
-#                 return event['user'], event['channel'], event['text']
-
-#         return None, None, None
-
-#     def chat_loop(self):
-#         while True:
-#             user, channel, text = self.get_slack_message()
-#             # Only respond if bot was mentioned by name
-#             if text and self.name_match.search(text):
-#                 self.handle_command(user, channel, text)
-#             # Sleep 1 second between reads
-#             time.sleep(1)
-
-#     def connect(self):
-#         if self.client.rtm_connect():
-#             names = self.client.server.login_data['self']['name'].split('_')
-#             self.name = " ".join(name.capitalize() for name in names)
-#             self.ID = self.client.server.login_data['self']['id']
-#             self.name_match = re.compile(
-#                 f"<@{self.ID}>|{'|'.join(names)}", flags=re.I)
-#             logger.info(f"{self.name} ({self.ID}) is connected and running!")
-
-#             self.chat_loop()
-#         else:
-#             logger.fatal("Connection failed. Invalid Slack token or bot ID?")
-#             exit()
+def relevant_to_bot(event):
+    bot_mentioned = event["type"] == "app_mention"
+    logger.debug(f"Bot was tagged? {bot_mentioned}")
+    name_dropped = re.search("doris", event["text"], flags=re.I)
+    logger.debug(f"Someone said Doris? {name_dropped}")
+    direct_message = event["channel"].startswith("D")
+    logger.debug(f"Direct message? {direct_message}")
+    return bot_mentioned or name_dropped or direct_message
 
 
-# def truncate(string):
-#     if len(string) > 40:
-#         return string[:37] + "..."
-#     return string
+def send_to(recipient, string):
+    post(SLACK_URL, data={"token": BOT_TOKEN, "channel": recipient, "text": string})
 
 
-# if __name__ == "__main__":
-#     slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
-#     doris = Lunchlady(slack_client)
-#     while True:
-#         try:
-#             doris.connect()
-#         except ConnectionResetError:
-#             continue
+def get_response(command):
+    handlers = []
+    plugins = plugin_loader()
+    for plugin in plugins:
+        if plugin.can_respond_to(command):
+            logger.debug(f'"{command}" can be handled by {plugin.__name__}')
+            handlers.append(plugin)
+
+    if len(handlers) > 1:
+        names = ", ".join(handler.__name__ for handler in handlers)
+        logger.warning(f"Found {len(handlers)} handlers for '{command}': {names}")
+
+    if handlers:
+        handler = handlers[0]
+        logger.info(f"Asking {handler.__name__} plugin for response")
+        return handler().response(command)
+    else:
+        try:
+            logger.debug(f'"{command}" did not match any handlers')
+            chatty = next(
+                (x for x in plugins if re.match("chat", x.__name__, flags=re.I))
+            )
+            logger.info(f"Asking {chatty.__name__} plugin for response")
+            return chatty().response()
+        except (StopIteration, AttributeError):
+            return "I do not understand what you want."
+
+
+def truncate(string):
+    if len(string) > 40:
+        return string[:37] + "..."
+    return string

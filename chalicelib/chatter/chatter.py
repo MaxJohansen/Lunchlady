@@ -3,6 +3,7 @@ import re
 import logging
 from json import loads
 from os import path
+
 logger = logging.getLogger(f"doris.plugins.{__name__}")
 
 dirname = path.dirname(__file__)
@@ -10,7 +11,7 @@ chatter_lines = path.join(dirname, "lines.json")
 
 
 class Chatter:
-    trigger = re.compile('h[ae]llo|howdy|h[ae][iy]', flags=re.I)
+    trigger = re.compile("h[ae]llo|howdy|h[ae][iy]", flags=re.I)
 
     @classmethod
     def can_respond_to(self, sentence):

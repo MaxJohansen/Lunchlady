@@ -28,8 +28,7 @@ class TestCore(TestCase):
 """
 
         weekday_menu = Core(
-            source=open(path.join(fixtures, "weekday.html")),
-            date=weekday
+            source=open(path.join(fixtures, "weekday.html")), date=weekday
         )
         self.maxDiff = None
         self.assertEqual(expected, weekday_menu.response())
@@ -41,15 +40,14 @@ class TestCore(TestCase):
         expected = "The cafeterias are closed today."
 
         weekend_menu = Core(
-            source=open(path.join(fixtures, "weekend.html")),
-            date=weekend
+            source=open(path.join(fixtures, "weekend.html")), date=weekend
         )
 
         self.assertEqual(expected, weekend_menu.response())
 
     def test_triggers(self):
         "Ensure that plugin responds to the correct keywords"
-        with patch('core.date') as weekday_date:
+        with patch("core.date") as weekday_date:
             weekday_date.today = Weekday
             self.assertTrue(Core.can_respond_to("lunsj pls"))
             self.assertTrue(Core.can_respond_to("I want some lunch"))

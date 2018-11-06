@@ -5,13 +5,14 @@ from datetime import date
 from urllib.request import urlopen
 from os import path
 from json import loads
+
 logger = logging.getLogger(f"doris.plugins.{__name__}")
 
 dirname = path.dirname(__file__)
 urls = {
-    'BAZINGA': 'https://samskipnaden.no/tromso/mat-drikke/vare-kafeer-og-kaffebarer/bazinga',
-    'MAT': 'https://samskipnaden.no/tromso/mat-drikke/vare-kafeer-og-kaffebarer/mat',
-    'MIX': 'https://samskipnaden.no/tromso/mat-drikke/vare-kafeer-og-kaffebarer/mix-kiosken'
+    "BAZINGA": "https://samskipnaden.no/tromso/mat-drikke/vare-kafeer-og-kaffebarer/bazinga",
+    "MAT": "https://samskipnaden.no/tromso/mat-drikke/vare-kafeer-og-kaffebarer/mat",
+    "MIX": "https://samskipnaden.no/tromso/mat-drikke/vare-kafeer-og-kaffebarer/mix-kiosken",
 }
 
 
@@ -22,7 +23,8 @@ class Constant:
     def __init__(self, source=None, date=date.today()):
         self.day = date.weekday()
         self.opening_hours = loads(
-            open(path.join(dirname, "opening_hours.json")).read())
+            open(path.join(dirname, "opening_hours.json")).read()
+        )
 
     @classmethod
     def can_respond_to(self, sentence):
@@ -36,15 +38,14 @@ class Constant:
 
     def response(self, *args):
         place = self.trigger.search(args[0])[0].upper()
-        if place == 'KIOSK':
-            place = 'MIX'
+        if place == "KIOSK":
+            place = "MIX"
         if not self.is_open(place):
             return f"*{place}* is closed today"
         self.source = urlopen(urls[place])
         opening_hours = self.get_opening_hours(place)
 
-        menu = self.soupify() \
-            .find("div", class_="view-content-rows")
+        menu = self.soupify().find("div", class_="view-content-rows")
 
         result = f"{place} (closes at *{opening_hours}* today) are serving:\n"
         result += self.string_menu(self.parse_menu_from_ul(menu("li")))
@@ -52,7 +53,7 @@ class Constant:
         return result
 
     def string_menu(self, items):
-        result = f">*Items*\n"
+        result = f">*Food*\n"
         for meal in sorted(items):
             result += f">• {meal}\n"
         return result
@@ -62,15 +63,24 @@ class Constant:
 
     def extract_element(self, navstring, fieldname):
         try:
-            res = navstring.find(
-                "div", class_=f"views-field-{fieldname}").find("div").string
+            res = (
+                navstring.find("div", class_=f"views-field-{fieldname}")
+                .find("div")
+                .string
+            )
         except AttributeError:
-            res = navstring.find(
-                "div", class_=f"views-field-{fieldname}").find("strong").string
+            res = (
+                navstring.find("div", class_=f"views-field-{fieldname}")
+                .find("strong")
+                .string
+            )
 
         if not res:
-            res = navstring.find(
-                "div", class_="views-field-nothing").find("strong").string
+            res = (
+                navstring.find("div", class_="views-field-nothing")
+                .find("strong")
+                .string
+            )
         return res.strip() or "Nothing"
 
     def soupify(self):
@@ -80,8 +90,10 @@ class Constant:
     def parse_menu_from_ul(self, unordered_list):
         menu = list()
         for li in unordered_list:
-            prices = [int(price) for price in re.findall(
-                "\\d+", self.extract_element(li, "field-price"))]
+            prices = [
+                int(price)
+                for price in re.findall("\\d+", self.extract_element(li, "field-price"))
+            ]
             name = self.extract_element(li, "nothing")
             desc = self.extract_element(li, "field-description")
             menu.append(Meal(name, desc, prices))
